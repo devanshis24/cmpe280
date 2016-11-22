@@ -1,0 +1,33 @@
+<html>
+<head>
+
+</head>
+<body>
+<div class="container-fluid" style="margin-top: 80px">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <form>
+            <div class="form-group">
+                <label for="exampleUserName">User Name</label>
+                <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter Username" ng-model="username">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" ng-model="email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-click="signup()">Submit</button>
+        </form>
+
+    </div>
+    <div class="col-sm-4"></div>
+
+</div>
+</body>
+</html>
+
