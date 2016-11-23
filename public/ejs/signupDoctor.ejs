@@ -1,0 +1,51 @@
+<html>
+<head>
+
+</head>
+<body>
+<div class="container-fluid" style="margin-top: 80px">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4" style="border-color: aliceblue;border-style: solid;border-width: 2px;border-radius: 15px 50px;padding: 10px">
+        <div class="navbar" style="height: 20px;background-color: #2b3643;color: aliceblue;font-size: larger;padding: 10px"><center><b style="">REGISTER AS DOCTOR</b></center></div>
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1" style="color: aliceblue;">Full Name</label>
+                <input type="text" class="form-control" id="fullName" aria-describedby="emailHelp" placeholder="Enter First Name Middle Initial Last Name" ng-model="fullName">
+
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1" style="color: aliceblue;">User Id</label>
+                <input type="text" class="form-control" id="userId" aria-describedby="emailHelp" placeholder="Enter User Id" ng-model="userId">
+
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1" style="color: aliceblue;">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" ng-model="email">
+
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" style="color: aliceblue;">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="password">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" style="color: aliceblue;">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword1" placeholder="Password" ng-model="confirmPassword1">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" style="color: aliceblue;">Mobile Number</label>
+                <input type="phone" class="form-control" id="mobile" placeholder="Password" ng-model="mobile">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" style="color: aliceblue;">Date Of Birth</label>
+                <input type="date" class="form-control" id="birthDate" placeholder="Select your Date of Birth" ng-model="birthDate">
+            </div>
+
+            <center><button type="submit" class="btn btn-primary" style="background-color: #2b3643;border-color: aliceblue;width: 150px" ng-click="login()">Register</button></center>
+        </form>
+        <p style="margin-top: 10px"> Don't have an account?<span> Register as patient or client using menubar at top-right</span></p>
+    </div>
+    <div class="col-sm-4"></div>
+
+</div>
+</body>
+</html>
