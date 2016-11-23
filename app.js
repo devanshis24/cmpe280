@@ -4,10 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var http = require('http');
+var mongooseConnection = require('./models/mongooseConnection');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-
+var registration=require('./routes/registration');
 var app = express();
 
 // view engine setup
@@ -24,6 +26,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+//get requests
+
+//post requests
+app.post('/signup',registration.signup);
+app.post('/signupDoctor', registration.signupDoctor);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -31,6 +40,8 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+
 
 // error handler
 app.use(function(err, req, res, next) {
