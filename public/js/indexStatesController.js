@@ -72,8 +72,9 @@ routerApp.controller('loginController',['$scope','$http','$state',function($scop
         }).success(function(data) {
             //checking the response data for statusCode
             if (data.statusCode == 200) {
+                console.log("Successfully Logged In")
                 //login success
-               // window.location.assign('/usermainpage');
+                window.location.assign('/patientDashboard');
             }
             else {
                 //handle error

@@ -6,10 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var mongooseConnection = require('./models/mongooseConnection');
-
+var session = require('express-session');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var registration=require('./routes/registration');
+var dashboard=require('./routes/dashboard');
 var app = express();
 
 // view engine setup
@@ -21,16 +22,20 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({secret:"alskdjfhgqpwoeiruty",resave:false,saveUninitialized:true}))
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-//get requests
 
+//get requests
+app.get('/patientDashboard',dashboard.patientDashboard);
 //post requests
 app.post('/signup',registration.signup);
 app.post('/signupDoctor', registration.signupDoctor);
+
+app.post('/login', registration.login);
 
 
 

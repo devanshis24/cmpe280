@@ -23,6 +23,7 @@ exports.signup=function(req,res){
 }
 
 exports.signupDoctor=function(req,res){
+
     var newDoctor = doctor({
         name: req.param("fullname"),
         userid: req.param("userid"),
@@ -39,6 +40,27 @@ exports.signupDoctor=function(req,res){
     console.log(req.param("email"));
     res.send({statusCode:200});
 }
-exports.login=function(req,res){
+exports.login=function(req,res,next){
+    console.log("in login"+req.param("email"));
+    var email = req.param("email");
+    var password = req.param("password");
+
+    patient.findOne({email: email, password: password}, function (err, patient) {
+        if(err) {
+            console.log(err);
+            res.send({statusCode:500});
+        }
+        if(!patient){
+            res.send({statusCode:404});
+        }
+        req.session.user = patient;
+        console.log("success login" + req.session.user);
+        res.send({statusCode:200});
+        
+    });
+
+}
+
+exports.loginDoctor=function(req,res){
     res.send({statusCode:200});
 }
