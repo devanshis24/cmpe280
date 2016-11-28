@@ -55,6 +55,7 @@ exports.login=function(req,res,next){
         }
         req.session.user = patient;
         console.log("success login" + req.session.user);
+
         res.send({statusCode:200});
         
     });

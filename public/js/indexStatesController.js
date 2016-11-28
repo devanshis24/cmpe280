@@ -58,6 +58,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
             }
         })
 });
+
 routerApp.controller('loginController',['$scope','$http','$state',function($scope,$http,$state){
     $scope.login=function(){
         console.log($scope.email+' '+$scope.password);
@@ -74,7 +75,8 @@ routerApp.controller('loginController',['$scope','$http','$state',function($scop
             if (data.statusCode == 200) {
                 console.log("Successfully Logged In")
                 //login success
-                window.location.assign('/patientDashboard');
+
+                window.location.assign('/fitbitAuth');
             }
             else {
                 //handle error
