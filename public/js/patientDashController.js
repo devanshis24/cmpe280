@@ -34,12 +34,13 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
             url : "/fb-profile"
         }).success(function (data) {
             if (data.statusCode == 200) {
-                console.log("Successfully Logged In  hiiis" + JSON.stringify(data)); }
+                $scope.a = JSON.stringify(data);
+                console.log("Successfully Logged In  hiiis" ); }
         }).error(function(error) {
             //handle error
         });
     }
 
     fetchFitbitData();
-
+//console.log(x);
 }]);
