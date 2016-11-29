@@ -32,11 +32,6 @@ fetchFitbitData = function () {
             method : "get",
             url : "/fb-profile",
         }).success(function (data) {
-<<<<<<< Updated upstream
-            if (data.statusCode == 200) {
-                $scope.a = JSON.stringify(data);
-                console.log("Successfully Logged In  hiiis" ); }
-=======
               console.log(data);
               $scope.hello = data;
             Highcharts.chart('container', {
@@ -50,15 +45,10 @@ fetchFitbitData = function () {
                     data: data
                 }]
             });
->>>>>>> Stashed changes
         }).error(function(error) {
             //handle error
         });
     }
 
     fetchFitbitData();
-<<<<<<< Updated upstream
-//console.log(x);
-=======
->>>>>>> Stashed changes
 }]);
