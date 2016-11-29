@@ -57,9 +57,18 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         })
+        .state('app.bookAppointment',{
+            url:'bookAppointment',
+            views: {
+                'content@':{
+                    templateUrl: '/ejs/bookAppointment.ejs',
+                    controller: 'appointmentController'
+                }
+            }
+        })
 });
 
-routerApp.controller('loginController',['$scope','$http','$state',function($scope,$http,$state){
+routerApp.controller('loginController',['$scope', '$http', '$state',function($scope, $http, $state){
     $scope.login=function(){
         console.log($scope.email+' '+$scope.password);
         $http({
@@ -87,9 +96,7 @@ routerApp.controller('loginController',['$scope','$http','$state',function($scop
 
     }
 }]);
-routerApp.controller('signupController',['$scope','$http','$state','$window',function($scope,$http,$state,$window){
-
-
+routerApp.controller('signupController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
     console.log($scope.userid+' '+$scope.email+' '+$scope.password);
     $scope.signup = function() {
         $http({
@@ -147,4 +154,35 @@ routerApp.controller('signupController',['$scope','$http','$state','$window',fun
         });
     };
 
+}]);
+
+routerApp.controller('appointmentController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+    $scope.bookAppointment = function() {
+        $http({
+            method : "POST",
+            url : '/bookAppointment',
+            data : {
+                "name": $scope.name,
+                "dob": $scope.dob,
+                "gender": $scope.gender,
+                "service": $scope.service,
+                "appointmentDate": $scope.appointmentDate,
+                "email":$scope.email,
+                "phone":$scope.phone,
+                "serviceDesc" : $scope.serviceDesc
+            }
+        }).success(function(data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                //registration success
+                console.log(data);
+                $state.transitionTo('app');
+            }
+            else {
+                //handle error
+            }
+        }).error(function(error) {
+            //handle error
+        });
+    };
 }]);

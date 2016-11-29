@@ -11,6 +11,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var registration=require('./routes/registration');
 var dashboard=require('./routes/dashboard');
+var appointment=require('./routes/appointment');
 var app = express();
 var fs      = require( 'fs' );
 var config  = require( './config.json' );
@@ -130,7 +131,7 @@ app.post('/signupDoctor', registration.signupDoctor);
 
 app.post('/login', registration.login);
 
-
+app.post('/bookAppointment', appointment.bookAppointment);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
