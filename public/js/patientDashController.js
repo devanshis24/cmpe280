@@ -88,21 +88,37 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 fetchFitbitData = function () {
         $http({
             method : "get",
-            url : "/fb-profile",
+            url : "/fb-profile"
         }).success(function (data) {
-              console.log(data);
-              $scope.hello = data;
-            Highcharts.chart('container', {
+            if(data.statusCode == 200) {
+                console.log(data);
+                $scope.hello = data;
+                Highcharts.chart('calorieContainer', {
 
-                xAxis: {
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                },
+                    xAxis: {
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                    },
 
-                series: [{
-                    data: data
-                }]
-            });
+                    series: [{
+                        data: data.calorieData
+                    }]
+                });
+                Highcharts.chart('heartContainer', {
+
+                    xAxis: {
+                        categories: data.time
+                    },
+
+                    series: [{
+                        data: data.heart
+                    }]
+                });
+            }
+            else
+                {
+                    console.log("eror")
+                }
         }).error(function(error) {
             //handle error
         });
