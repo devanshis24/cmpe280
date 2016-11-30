@@ -96,11 +96,49 @@ routerApp.controller('loginController',['$scope', '$http', '$state',function($sc
 
                 window.location.assign('/fitbitAuth');
             }
-            else {
-                //handle error
+            else if(data.statusCode == 404) {
+                alert(" User doesnot exists ! Pleasecheck you email or password. ");
+                $scope.email = "";
+                $scope.password = "";
+                focus('exampleInputEmail1');
+            }
+            else if(data.statusCode == 500) {
+                window.location.href("error?message=Error");
             }
         }).error(function(error) {
-            //handle error
+            window.location.href("error?message=Error");
+        });
+
+    }
+
+    //function for login doctor
+    $scope.loginDoctor=function(){
+        console.log($scope.email+' '+$scope.password);
+        $http({
+            method : "post",
+            url : '/loginDoctor',
+            data : {
+
+                "email":$scope.email,
+                "password" : $scope.password
+            }
+        }).success(function(data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                console.log("Successfully Logged In as Doctor")
+                //login success
+
+                window.location.assign('doctorDash.ejs');
+            }
+            else if(data.statusCode == 404) {
+                alert(" User doesnot exists ! Pleasecheck you email or password. ");
+
+            }
+            else if(data.statusCode == 500) {
+                window.location.href("error?message=Error");
+            }
+        }).error(function(error) {
+            window.location.href("error?message=Error");
         });
 
     }

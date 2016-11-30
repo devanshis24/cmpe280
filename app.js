@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 var mongooseConnection = require('./models/mongooseConnection');
-var session = require('express-session');
+var session = require('client-sessions');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var registration=require('./routes/registration');
@@ -26,6 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 var tfile = 'fb-token.json';
+
 var persist = {
   read: function( filename, cb ) {
     fs.readFile( filename, { encoding: 'utf8', flag: 'r' }, function( err, data ) {
@@ -47,11 +48,32 @@ var persist = {
 // Instanciate a fitbit client.  See example config below.
 //
 var fitbit = new Fitbit( config.fitbit );
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+
+  cookieName: 'session',
+  secret: 'cmpe280_test_string',
+  duration: 30 * 60 * 1000,    //setting the time for active session
+  activeDuration: 5 * 60 * 1000,  }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', index);
+app.use('/users', users);
 
 // In a browser, http://localhost:4000/fitbit to authorize a user for the first time.
 //
 app.get('/fitbitAuth', function (req, res) {
+  if(req.session.user){
+    console.log("Session created : "+ req.session.user);
   res.redirect( fitbit.authorizeURL() );
+  }
+  else
+  {
+    console.log("Session Error");
+  }
 });
 
 // Callback service parsing the authorization token and asking for the access token.  This
@@ -72,6 +94,10 @@ app.get('/callback', function (req, res, next) {
   res.render('patientDashBoard');
 });
 
+app.get('/patientDashboard', function (req,res,next) {
+  res.render('patientDashBoard');
+
+})
 app.get( '/fb-profile', function( req, res, next ) {
   console.log("abcd : ");
   persist.read( tfile, function( err, token ) {
@@ -121,19 +147,16 @@ app.get( '/fb-profile', function( req, res, next ) {
 });
 
 
+app.get('/logout', function (req,res,next) {
+  console.log(req.session.user);
+  req.session.destroy();
+  res.redirect("/");
 
+})
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({secret:"alskdjfhgqpwoeiruty",resave:false,saveUninitialized:true}))
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
 
 
 //post requests
@@ -141,7 +164,7 @@ app.post('/signup',registration.signup);
 app.post('/signupDoctor', registration.signupDoctor);
 
 app.post('/login', registration.login);
-
+app.post('/loginDoctor' , registration.loginDoctor);
 app.post('/bookAppointment', appointment.bookAppointment);
 
 // catch 404 and forward to error handler

@@ -12,7 +12,8 @@ $stateProvider
         url: '/',
         views: {
             'header':{
-                templateUrl: '/ejs/header.ejs',
+                templateUrl: '/ejs/patientHeader.ejs'
+
 
             },
             'content': {
@@ -22,6 +23,63 @@ $stateProvider
 
         }
     })
+    .state('app.appointment', {
+
+        url: '/appointment',
+        views : {
+            'header@' : {
+                templateUrl: '/ejs/patientHeader.ejs',
+            }
+            ,
+            'content@': {
+                templateUrl: '/ejs/bookAppointment.ejs',
+                controller: 'patientAppointmentController'
+            }
+        }
+    })
+    .state('app.heartRate', {
+
+        url: '/heartRate',
+        views : {
+            'header@' : {
+                templateUrl: '/ejs/patientHeader.ejs',
+            }
+            ,
+            'content@': {
+                templateUrl: '/ejs/bookAppointment.ejs',
+                controller: 'patientAppointmentController'
+            }
+        }
+    })
+    .state('app.doctorDirectory', {
+
+        url: '/doctorDirectory',
+        views : {
+            'header@' : {
+                templateUrl: '/ejs/patientHeader.ejs',
+            }
+            ,
+            'content@': {
+                templateUrl: '/ejs/bookAppointment.ejs',
+                controller: 'patientAppointmentController'
+            }
+        }
+    })
+    .state('app.chat', {
+
+        url: '/chat',
+        views : {
+            'header@' : {
+                templateUrl: '/ejs/patientHeader.ejs',
+            }
+            ,
+            'content@': {
+                templateUrl: '/ejs/bookAppointment.ejs',
+                controller: 'patientAppointmentController'
+            }
+        }
+    })
+
 
 });
 
@@ -52,3 +110,10 @@ fetchFitbitData = function () {
 
     fetchFitbitData();
 }]);
+
+patientDashApp.constructor('patientAppointmentController', ['$scope','$http', '$state', function ($scope,$http,$state) {
+
+    $scope.abc = function () {
+        $state.go('appointment');
+    }
+}])
