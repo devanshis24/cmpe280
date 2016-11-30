@@ -12,6 +12,7 @@ var users = require('./routes/users');
 var registration=require('./routes/registration');
 var dashboard=require('./routes/dashboard');
 var appointment=require('./routes/appointment');
+var doctor=require('./routes/doctor');
 var app = express();
 var fs      = require( 'fs' );
 var config  = require( './config.json' );
@@ -93,7 +94,7 @@ app.get('/callback', function (req, res, next) {
   });
   res.render('patientDashBoard');
 });
-
+app.get('/doctorDash', doctor.doctorDash);
 app.get('/patientDashboard', function (req,res,next) {
   res.render('patientDashBoard');
 

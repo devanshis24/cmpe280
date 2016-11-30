@@ -68,18 +68,20 @@ exports.loginDoctor=function(req,res){
     var email = req.param("email");
     var password = req.param("password");
 
-    patient.findOne({email: email, password: password}, function (err, doctor) {
+    doctor.findOne({email: email, password: password}, function (err, doctor) {
         if(err) {
             console.log(err);
             res.send({statusCode:500});
         }
-        if(!patient){
+        else if(!doctor){
             res.send({statusCode:404});
         }
+        else {
         req.session.user = doctor;
         console.log("success login Doctor" + req.session.user);
 
         res.send({statusCode:200});
+        }
 
     });
 }

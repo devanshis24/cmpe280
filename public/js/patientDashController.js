@@ -33,7 +33,7 @@ $stateProvider
             ,
             'content@': {
                 templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'patientAppointmentController'
+                controller: 'appointmentController'
             }
         }
     })
@@ -111,9 +111,35 @@ fetchFitbitData = function () {
     fetchFitbitData();
 }]);
 
-patientDashApp.constructor('patientAppointmentController', ['$scope','$http', '$state', function ($scope,$http,$state) {
 
-    $scope.abc = function () {
-        $state.go('appointment');
-    }
-}])
+
+patientDashApp.controller('appointmentController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+    $scope.bookAppointment = function() {
+        $http({
+            method : "POST",
+            url : '/bookAppointment',
+            data : {
+                "name": $scope.name,
+                "dob": $scope.dob,
+                "gender": $scope.gender,
+                "service": $scope.service,
+                "appointmentDate": $scope.appointmentDate,
+                "email":$scope.email,
+                "phone":$scope.phone,
+                "serviceDesc" : $scope.serviceDesc
+            }
+        }).success(function(data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                //registration success
+                console.log(data);
+                $state.transitionTo('app');
+            }
+            else {
+                //handle error
+            }
+        }).error(function(error) {
+            //handle error
+        });
+    };
+}]);
