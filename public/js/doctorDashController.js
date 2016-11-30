@@ -4,7 +4,7 @@
 /**
  * Created by devanshis24 on 11/26/2016.
  */
-var doctorDashApp = angular.module('doctorDashApp', ['ui.router', 'ngStorage']);
+var doctorDashApp = angular.module('doctorDashApp', ['ui.router', 'ngStorage', 'ui.calendar', 'ui.bootstrap']);
 doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
 

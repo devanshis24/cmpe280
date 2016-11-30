@@ -1,4 +1,4 @@
-var routerApp = angular.module('routerApp', ['ui.router', 'ngStorage', 'ui.calendar', 'ui.bootstrap']);
+var routerApp = angular.module('routerApp', ['ui.router', 'ngStorage']);
 routerApp.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/');
