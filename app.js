@@ -118,7 +118,7 @@ app.get( '/fb-profile', function( req, res, next ) {
       if ( err ) return next( err );
       var profile = JSON.parse( body );
       // if token is not null, a refesh has happened and we need to persist the new token
-     // console.log("token : " + token + "aaa " + JSON.stringify(profile));
+      console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
       if ( token ) {
         console.log("abcd123 : " + token);
         persist.write( tfile, token, function( err ) {
@@ -130,7 +130,18 @@ app.get( '/fb-profile', function( req, res, next ) {
       }
       else
        // res.status(200).send({data1 : profile});
-        res.send({statusCode:200 , data1 : profile });
+          var jsonArr = [];
+          var obj = [];
+      obj = profile["activities-heart-intraday"].dataset;
+
+
+
+        for(var i = 0; i < obj.length ; i++){
+          jsonArr[i] = obj[i].value;
+        }
+        var ress = jsonArr;
+
+        res.send(ress);
     });
   });
 });

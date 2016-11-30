@@ -85,22 +85,30 @@ $stateProvider
 
 
 patientDashApp.controller('patientController',['$scope','$http','$state',function($scope,$http,$state){
-
-    fetchFitbitData = function () {
+fetchFitbitData = function () {
         $http({
             method : "get",
-            url : "/fb-profile"
+            url : "/fb-profile",
         }).success(function (data) {
-            if (data.statusCode == 200) {
-                $scope.a = JSON.stringify(data);
-                console.log("Successfully Logged In  hiiis" ); }
+              console.log(data);
+              $scope.hello = data;
+            Highcharts.chart('container', {
+
+                xAxis: {
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                },
+
+                series: [{
+                    data: data
+                }]
+            });
         }).error(function(error) {
             //handle error
         });
     }
 
     fetchFitbitData();
-//console.log(x);
 }]);
 
 patientDashApp.constructor('patientAppointmentController', ['$scope','$http', '$state', function ($scope,$http,$state) {
