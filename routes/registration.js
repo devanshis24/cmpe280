@@ -50,18 +50,36 @@ exports.login=function(req,res,next){
             console.log(err);
             res.send({statusCode:500});
         }
-        if(!patient){
+        else if(!patient){
             res.send({statusCode:404});
         }
+        else {
         req.session.user = patient;
         console.log("success login" + req.session.user);
-
         res.send({statusCode:200});
+        }
         
     });
 
 }
 
 exports.loginDoctor=function(req,res){
-    res.send({statusCode:200});
+    console.log("in login"+req.param("email"));
+    var email = req.param("email");
+    var password = req.param("password");
+
+    patient.findOne({email: email, password: password}, function (err, doctor) {
+        if(err) {
+            console.log(err);
+            res.send({statusCode:500});
+        }
+        if(!patient){
+            res.send({statusCode:404});
+        }
+        req.session.user = doctor;
+        console.log("success login Doctor" + req.session.user);
+
+        res.send({statusCode:200});
+
+    });
 }
