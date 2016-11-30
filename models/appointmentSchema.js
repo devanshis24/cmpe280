@@ -5,6 +5,7 @@ var appointment =  new mongoose.Schema({
     dob: Date,
     gender: String,
     service: String,
+    doctorName: String,
     appointmentDate: String,
     email: String,
     phone: String,

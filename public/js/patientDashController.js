@@ -47,7 +47,7 @@ $stateProvider
             ,
             'content@': {
                 templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'patientAppointmentController'
+                controller: 'appointmentController'
             }
         }
     })
@@ -61,7 +61,7 @@ $stateProvider
             ,
             'content@': {
                 templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'patientAppointmentController'
+                controller: 'appointmentController'
             }
         }
     })
@@ -75,7 +75,7 @@ $stateProvider
             ,
             'content@': {
                 templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'patientAppointmentController'
+                controller: 'appointmentController'
             }
         }
     })
@@ -130,6 +130,25 @@ fetchFitbitData = function () {
 
 
 patientDashApp.controller('appointmentController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+    $scope.doctorNames = [];
+    $http({
+        method : "GET",
+        url : '/findDoctors'
+    }).success(function(data) {
+        //checking the response data for statusCode
+        if (data.statusCode == 200) {
+            var doctors = data.result;
+            for (i = 0; i < doctors.length; i++) {
+                $scope.doctorNames.push(doctors[i].name);
+            }
+        }
+        else {
+            //handle error
+        }
+    }).error(function(error) {
+        //handle error
+    });
+
     $scope.bookAppointment = function() {
         $http({
             method : "POST",
@@ -139,6 +158,7 @@ patientDashApp.controller('appointmentController',['$scope', '$http', '$state', 
                 "dob": $scope.dob,
                 "gender": $scope.gender,
                 "service": $scope.service,
+                "doctorName": $scope.doctorName,
                 "appointmentDate": $scope.appointmentDate,
                 "email":$scope.email,
                 "phone":$scope.phone,

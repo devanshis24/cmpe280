@@ -230,7 +230,7 @@ app.get('/logout', function (req,res,next) {
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-
+app.get('/findDoctors', appointment.findDoctors);
 
 //post requests
 app.post('/signup',registration.signup);
