@@ -14,6 +14,7 @@ var registration=require('./routes/registration');
 var dashboard=require('./routes/dashboard');
 var appointment=require('./routes/appointment');
 var doctor=require('./routes/doctor');
+var message=require('./routes/message');
 var app = express();
 var server = require('http').Server(app);
 var WebSocketServer = require('websocket').server;
@@ -157,6 +158,7 @@ app.get('/fitbitAuth', function (req, res) {
     console.log("Session Error");
   }
 });
+app.post('/addMessage',message.addMessage);
 
 // Callback service parsing the authorization token and asking for the access token.  This
 // endpoint is refered to in config.fitbit.authorization_uri.redirect_uri.  See example
@@ -176,6 +178,7 @@ app.get('/callback', function (req, res, next) {
   res.render('patientDashBoard');
 });
 app.get('/doctorDash', doctor.doctorDash);
+app.get('/getMessages',message.getMessages);
 app.get('/patientDashboard', function (req,res,next) {
   res.render('patientDashBoard');
 
@@ -313,6 +316,7 @@ app.get('/logout', function (req,res,next) {
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.get('/findDoctors', appointment.findDoctors);
+app.get('/findPatients',appointment.findPatients);
 app.get('/sessionValues', function (req,res,next) {
     console.log("IN get session " + req.session.user.name);
     res.send(req.session.user);
