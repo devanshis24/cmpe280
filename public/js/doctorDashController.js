@@ -78,7 +78,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
                 ,
                 'content@': {
                     templateUrl: '/ejs/chatDoctor.ejs',
-                    controller: 'doctorController'
+                    controller: 'chatDoctorController'
                 }
             }
         })
@@ -222,4 +222,83 @@ doctorDashApp.controller('doctorScheduleController', function($scope, $compile, 
     /* event sources array*/
     $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
     $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
+
 });
+doctorDashApp.controller('chatDoctorController',['$scope','$http','$state',function($scope,$http,$state){
+    $scope.getMessages=function(){
+        $http({
+            method: "get",
+            url: '/getMessages',
+
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                $scope.messages=data.result;
+            }
+            else if (data.statusCode == 404) {
+                //alert(" User doesnot exists ! Pleasecheck you email or password. ");
+                //$scope.email = "";
+                //$scope.password = "";
+                //focus('exampleInputEmail1');
+            }
+            else if (data.statusCode == 500) {
+                //window.location.href("error?message=Error");
+            }
+        }).error(function (error) {
+            window.location.href("error?message=Error");
+        });
+    }
+    $scope.getPatients=function () {
+        $scope.patientNames = [];
+        $http({
+            method : "GET",
+            url : '/findPatients'
+        }).success(function(data) {
+            //checking the response data for statusCode
+            console.log(data+'in the result');
+            if (data.statusCode == 200) {
+                var patients = data.result;
+                console.log('result'+patients);
+                for (i = 0; i < patients.length; i++) {
+                    $scope.patientNames.push(patients[i].name);
+                }
+            }
+            else {
+                //handle error
+            }
+        }).error(function(error) {
+            //handle error
+        });
+    }
+    $scope.sendMessage=function() {
+        console.log('inside send message');
+        $http({
+            method: "post",
+            url: '/addMessage',
+            data: {
+
+                "patientName": $scope.patientName,
+                "message": $scope.message
+            }
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                //console.log("Successfully Logged In")
+                //login success
+
+                //window.location.assign('/fitbitAuth');
+            }
+            else if (data.statusCode == 404) {
+                //alert(" User doesnot exists ! Pleasecheck you email or password. ");
+                //$scope.email = "";
+                //$scope.password = "";
+                //focus('exampleInputEmail1');
+            }
+            else if (data.statusCode == 500) {
+                //window.location.href("error?message=Error");
+            }
+        }).error(function (error) {
+            window.location.href("error?message=Error");
+        });
+    }
+}]);

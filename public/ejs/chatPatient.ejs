@@ -1,0 +1,25 @@
+<div class="container-fluid" style="margin-top: 50px" ng-init="getDoctors()">
+    <div class="col-sm-3">
+
+    </div>
+    <div class="col-sm-6" ng-init="getMessages()">
+        <div class="form-group">
+            <label for="doctorName" style="color: #2b3643;">Doctor Name</label>
+            <select class="form-control" name="doctorName" id="doctorName" ng-model="doctorName" ng-options="x for x in doctorNames" tabindex="0">
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="serviceDesc" style="color: #2b3643;">Message</label>
+            <textarea rows="4" cols="50" class="form-control" id="serviceDesc" placeholder="Service Description" ng-model="message">
+                        </textarea>
+        </div>
+
+        <center><button type="submit" class="btn btn-primary" style="background-color: #2b3643;border-color: aliceblue;width: 150px" ng-click="sendMessage()">Send Message</button></center>
+        <div><h3 style="font:PLAYFAIR DISPLAY">Your Messages</h3></div>
+
+        <div ng-repeat="message in messages" style="color: #777;background-color: #f5f5f5">
+            <div style="padding: 5px"><strong style="color:#222;">{{message.from}} -</strong></div>
+            <div style="padding: 5px"><p>{{message.message}}</p></div>
+        </div>
+    </div>
+</div>

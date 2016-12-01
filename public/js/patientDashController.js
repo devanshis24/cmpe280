@@ -74,8 +74,8 @@ $stateProvider
             }
             ,
             'content@': {
-                templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'appointmentController'
+                templateUrl: '/ejs/chatPatient.ejs',
+                controller: 'chatPatientController'
             }
         }
     })
@@ -281,4 +281,83 @@ patientDashApp.controller('appointmentController',['$scope', '$http', '$state', 
             //handle error
         });
     };
+}]);
+patientDashApp.controller('chatPatientController',['$scope','$http','$state',function($scope,$http,$state){
+    $scope.getDoctors=function () {
+        $scope.doctorNames = [];
+        $http({
+            method : "GET",
+            url : '/findDoctors'
+        }).success(function(data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                var doctors = data.result;
+                console.log('result'+doctors);
+                for (i = 0; i < doctors.length; i++) {
+                    $scope.doctorNames.push(doctors[i].name);
+                }
+            }
+            else {
+                //handle error
+            }
+        }).error(function(error) {
+            //handle error
+        });
+    }
+    $scope.sendMessage=function() {
+        console.log('inside send message');
+        $http({
+            method: "post",
+            url: '/addMessage',
+            data: {
+
+                "doctorName": $scope.doctorName,
+                "message": $scope.message
+            }
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                //console.log("Successfully Logged In")
+                //login success
+
+                //window.location.assign('/fitbitAuth');
+            }
+            else if (data.statusCode == 404) {
+                //alert(" User doesnot exists ! Pleasecheck you email or password. ");
+                //$scope.email = "";
+                //$scope.password = "";
+                //focus('exampleInputEmail1');
+            }
+            else if (data.statusCode == 500) {
+                //window.location.href("error?message=Error");
+            }
+        }).error(function (error) {
+            window.location.href("error?message=Error");
+        });
+    }
+    $scope.getMessages=function(){
+        $http({
+            method: "get",
+            url: '/getMessages',
+
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                $scope.messages=data.result;
+                console.log(data.result+'success');
+            }
+            else if (data.statusCode == 404) {
+                console.log("no data found");
+                //alert(" User doesnot exists ! Pleasecheck you email or password. ");
+                //$scope.email = "";
+                //$scope.password = "";
+                //focus('exampleInputEmail1');
+            }
+            else if (data.statusCode == 500) {
+                //window.location.href("error?message=Error");
+            }
+        }).error(function (error) {
+            window.location.href("error?message=Error");
+        });
+    }
 }]);
