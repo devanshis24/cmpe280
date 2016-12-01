@@ -140,6 +140,7 @@ patientDashApp.controller('heartRateController',['$scope','$http','$state','$win
             //$scope.score=0;
             //$scope.socket.disconnect();
         }
+        //
         var flag=0;
         $scope.waitForConnection=function() {
             if (socket.readyState == 1) {
