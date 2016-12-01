@@ -15,8 +15,8 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/',
             views: {
                 'header':{
-                    templateUrl: '/ejs/doctorHeader.ejs'
-
+                    templateUrl: '/ejs/doctorHeader.ejs',
+                    controller: 'headerController'
 
                 },
                 'content': {
@@ -32,6 +32,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             views : {
                 'header@' : {
                     templateUrl: '/ejs/doctorHeader.ejs',
+                    controller: 'headerController'
                 }
                 ,
                 'content@': {
@@ -46,11 +47,12 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             views : {
                 'header@' : {
                     templateUrl: '/ejs/doctorHeader.ejs',
+                    controller: 'headerController'
                 }
                 ,
                 'content@': {
-                    templateUrl: '/ejs/doctorDashboard.ejs',
-                    controller: 'doctorController'
+                    templateUrl: '/ejs/doctorDash.ejs',
+                    controller: 'doctorDashController'
                 }
             }
         })
@@ -60,11 +62,12 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             views : {
                 'header@' : {
                     templateUrl: '/ejs/doctorHeader.ejs',
+                    controller: 'headerController'
                 }
                 ,
                 'content@': {
-                    templateUrl: '/ejs/bookAppointment.ejs',
-                    controller: 'doctorController'
+                    templateUrl: '/ejs/patientDirectory.ejs',
+                    controller: 'directoryController'
                 }
             }
         })
@@ -74,6 +77,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             views : {
                 'header@' : {
                     templateUrl: '/ejs/doctorHeader.ejs',
+                    controller: 'headerController'
                 }
                 ,
                 'content@': {
@@ -87,24 +91,6 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
 });
 
 
-doctorDashApp.controller('patientController',['$scope','$http','$state',function($scope,$http,$state){
-
-    fetchFitbitData = function () {
-        $http({
-            method : "get",
-            url : "/fb-profile"
-        }).success(function (data) {
-            if (data.statusCode == 200) {
-                $scope.a = JSON.stringify(data);
-                console.log("Successfully Logged In  hiiis" ); }
-        }).error(function(error) {
-            //handle error
-        });
-    }
-
-    fetchFitbitData();
-//console.log(x);
-}]);
 
 
 
@@ -223,3 +209,126 @@ doctorDashApp.controller('doctorScheduleController', function($scope, $compile, 
     $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
     $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
 });
+doctorDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage','$window',function($scope, $http, $state,$localStorage, $window) {
+
+    getSessionValues = function () {
+        $http({
+            method : 'get',
+            url : '/sessionValues'
+        }).success(function(data1) {
+            //checking the response data for statusCode
+            console.log("SESSION NAME " +data1.name);
+            $scope.userName = data1.name;
+            getPatientCounts = function () {
+                alert("innnnnn" + data1.name);
+                $http({
+                    method: 'post',
+                    url: '/patientDirectory',
+                    data: {doctorName: data1.name}
+
+                }).success(function (data) {
+                    //checking the response data for statusCode
+                    if(data.statusCode == "200") {
+                        console.log("success patient counts : " + data.aging);
+                        $localStorage.doctorName = data1.name;
+                        $localStorage.aging = data.aging;
+                        $localStorage.dental = data.dental;
+                        $localStorage.eye = data.eye;
+                        $localStorage.physio = data.physio;
+                        //$localStorage.fitness = data.fitness;
+                    }
+                    else if(data.statusCode == "500") {
+                        console.log("500 error");
+                    }
+                    else {
+                        console.log("404 error");
+                    }
+                }).error(function (error) {
+                    //handle error
+                });
+            }
+            getPatientCounts();
+        }).error(function(error) {
+            //handle error
+        });
+    };
+
+
+
+    getSessionValues();
+
+
+    $scope.logout = function() {
+
+        alert("Logout");
+        $localStorage.$reset();
+        $http({
+            method: 'get',
+            url: '/logout'
+        });
+    }
+
+}]);
+
+doctorDashApp.controller('directoryController',['$scope','$http','$state','$localStorage',function($scope,$http,$state,$localStorage){
+
+
+}]);
+
+doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$localStorage','$window',function($scope, $http, $state,$localStorage, $window) {
+
+    getPatientData = function () {
+        alert("innnnnn Pataint Data " + $localStorage.doctorName);
+        $http({
+            method: 'post',
+            url: '/patientData',
+            data: {"doctorName": $localStorage.doctorName}
+
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if(data.statusCode == "200") {
+                console.log("success patient Data : " + JSON.stringify(data));
+
+                $scope.appointments = data.result;
+            }
+            else if(data.statusCode == "500") {
+                console.log("500 error");
+            }
+            else {
+                console.log("404 error");
+            }
+        }).error(function (error) {
+            //handle error
+        });
+    }
+    getPatientData();
+
+    $scope.getPatient = function(person){
+
+        $http({
+            method: 'post',
+            url: '/acceptAppointment',
+            data: {"name": person.name,"service":person.service,
+            "doctorName" : $localStorage.doctorName}
+
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if(data.statusCode == "200") {
+                //alert("success patient Data : " + JSON.stringify(data));
+                //$scope.appointments = data.result1;
+
+            }
+            else if(data.statusCode == "500") {
+                console.log("500 error");
+            }
+            else {
+                console.log("404 error");
+            }
+        }).error(function (error) {
+            //handle error
+        });
+
+    }
+
+    //ng-class='{selected: isSelected(person)}'
+}]);

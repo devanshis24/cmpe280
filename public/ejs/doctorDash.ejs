@@ -1,0 +1,23 @@
+<div style="margin: 100px;">
+
+   <table class="table table-hover" style="text-align: center">
+        <thead style="text-align: center">
+        <tr>
+            <th style="text-align: center">Patient Name</th>
+            <th style="text-align: center">Date / Time</th>
+            <th style="text-align: center">Service</th>
+            <th style="text-align: center">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="x in appointments" ng-click='getselectedRow(a)'>
+            <td>{{ x.name }}</td>
+            <td>{{ x.appointmentDate }}</td>
+            <td>{{ x.service }}</td>
+            <td><span class="btn btn-success" ng-value='x' ng-click="getPatient(x)">Accept</span></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
