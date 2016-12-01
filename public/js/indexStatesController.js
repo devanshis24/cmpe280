@@ -12,6 +12,7 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
                 'header':{
                     templateUrl: '/ejs/header.ejs',
 
+
                 },
                 'content': {
                     templateUrl: '/ejs/loginpage.ejs',
@@ -61,6 +62,9 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 });
 
 routerApp.controller('loginController',['$scope', '$http', '$state',function($scope, $http, $state){
+
+
+
     $scope.login=function(){
         console.log($scope.email+' '+$scope.password);
         $http({
@@ -166,6 +170,8 @@ routerApp.controller('signupController',['$scope', '$http', '$state', '$window',
                 "email":$scope.email,
                 "password" : $scope.password,
                 "confirmpassword" : $scope.confirmpassword,
+                "gender" : $scope.gender,
+                "speciality" : $scope.speciality,
                 "mobile" : $scope.mobile,
                 "birthdate" : $scope.birthdate
             }

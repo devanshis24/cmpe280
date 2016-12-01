@@ -307,15 +307,22 @@ app.get( '/fb-dyn', function( req, res, next ) {
 app.get('/logout', function (req,res,next) {
   console.log(req.session.user);
   req.session.destroy();
-  res.redirect("/");
-
-})
+    console.log("destroyed " + req.session.user);
+        res.redirect("/");
+//res.render("index" , {title : Fitbit});
+});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.get('/findDoctors', appointment.findDoctors);
 app.get('/findPatients',appointment.findPatients);
+app.get('/sessionValues', function (req,res,next) {
+    console.log("IN get session " + req.session.user.name);
+    res.send(req.session.user);
+
+})
+app.post('/patientDirectory' , appointment.findPatientsDiseases);
 //post requests
 app.post('/signup',registration.signup);
 app.post('/signupDoctor', registration.signupDoctor);
@@ -323,7 +330,8 @@ app.post('/signupDoctor', registration.signupDoctor);
 app.post('/login', registration.login);
 app.post('/loginDoctor' , registration.loginDoctor);
 app.post('/bookAppointment', appointment.bookAppointment);
-
+app.post('/patientData',appointment.getPatientAppointments);
+app.post('/acceptAppointment',appointment.acceptPatientAppointment);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

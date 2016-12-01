@@ -12,7 +12,8 @@ $stateProvider
         url: '/',
         views: {
             'header':{
-                templateUrl: '/ejs/patientHeader.ejs'
+                templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
 
 
             },
@@ -29,6 +30,7 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
@@ -43,6 +45,7 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
@@ -57,11 +60,12 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
-                templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'appointmentController'
+                templateUrl: '/ejs/doctorDirectory.ejs',
+                controller: 'doctorDirectoryController'
             }
         }
     })
@@ -71,6 +75,7 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
@@ -223,14 +228,6 @@ patientDashApp.controller('heartRateController',['$scope','$http','$state','$win
         }
 
 
-
-
-
-
-
-
-
-
     }
 }]);
 patientDashApp.controller('appointmentController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
@@ -283,6 +280,61 @@ patientDashApp.controller('appointmentController',['$scope', '$http', '$state', 
         });
     };
 }]);
+
+
+
+
+patientDashApp.controller('doctorDirectoryController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+    $scope.doctors = [];
+    $http({
+        method : "GET",
+        url : '/findDoctors'
+    }).success(function(data) {
+        //checking the response data for statusCode
+        if (data.statusCode == 200) {
+            var nums = [1, 2];
+            $scope.doctors = data.result;
+            for (var i=0; i<$scope.doctors.length; i++) {
+                $scope.doctors[i].num = nums[Math.floor(Math.random()*nums.length)]
+            }
+        }
+        else {
+            //handle error
+        }
+    }).error(function(error) {
+        //handle error
+    });
+
+
+}]);
+
+patientDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage', '$window',function($scope, $http, $state,$localStorage, $window) {
+
+    getSessionValues = function () {
+        $http({
+            method: 'get',
+            url: '/sessionValues'
+        }).success(function (data) {
+            //checking the response data for statusCode
+            console.log("SESSION NAME " + data.name);
+            $scope.userName = data.name;
+        }).error(function (error) {
+            //handle error
+        });
+    }
+    getSessionValues();
+
+    $scope.logout = function () {
+
+        alert("Logout");
+        $localStorage.$reset();
+        $http({
+            method: 'get',
+            url: '/logout'
+        });
+    }
+}]);
+
 patientDashApp.controller('chatPatientController',['$scope','$http','$state',function($scope,$http,$state){
     $scope.getDoctors=function () {
         $scope.doctorNames = [];
