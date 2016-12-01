@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
+var nodemailer = require('nodemailer');
 var mongooseConnection = require('./models/mongooseConnection');
 var session = require('client-sessions');
 var index = require('./routes/index');
@@ -14,6 +15,11 @@ var dashboard=require('./routes/dashboard');
 var appointment=require('./routes/appointment');
 var doctor=require('./routes/doctor');
 var app = express();
+var server = require('http').Server(app);
+var WebSocketServer = require('websocket').server;
+wsServer = new WebSocketServer({
+    httpServer: server
+});
 var fs      = require( 'fs' );
 var config  = require( './config.json' );
 var Fitbit  = require( 'fitbit-oauth2' );
@@ -63,6 +69,81 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+wsServer.on('request', function(r){
+    // Code here to run on connection
+    var connection = r.accept('echo-protocol', r.origin);
+    var count = 0;
+    var clients = {};
+    // Specific id for this client & increment count
+    var id = count++;
+// Store the connection method so we can loop through & contact all clients
+    clients[id] = connection;
+    console.log((new Date()) + ' Connection accepted [' + id + ']');
+    var count=0;
+    // Create event listener
+    connection.on('message', function(message) {
+
+
+        // The string message that was sent to us
+        var msgString = message.utf8Data;
+
+        console.log(msgString);
+        // Loop through all clients
+        function sendMessage() {
+            for (var i in clients) {
+                // Send a message to the client with the message
+                var heartRate=Math.round((Math.random()*(104)+48));
+                if(heartRate<50||heartRate>150){
+                    if(count<20){
+                        heartRate=Math.round((Math.random()*(100)+50));
+                        count++;
+                    }
+                    else {
+                        count = 0;
+                        var smtpConfig = {
+                            host: 'smtp.gmail.com',
+                            port: 465,
+                            secure: true, // use SSL
+                            auth: {
+                                user: 'ehealth.cmpe280@gmail.com',
+                                pass: 'cmpe280sjsu'
+                            }
+                        };
+                        // create reusable transporter object using the default SMTP transport
+                        var transporter = nodemailer.createTransport(smtpConfig);
+
+                        // setup e-mail data with unicode symbols
+                        var mailOptions = {
+                            from: '"ehealth 👥" <ehealth.cmpe280@gmail.com>', // sender address
+                            to: 'raghavendra.kps88@gmail.com', // list of receivers
+                            subject: 'Hello ✔', // Subject line
+                            text: 'Hello world 🐴', // plaintext body
+                            html: '<b>Hello world 🐴</b>' // html body
+                        };
+
+                        // send mail with defined transport object
+                        transporter.sendMail(mailOptions, function(error, info){
+                            if(error){
+                                return console.log(error);
+                            }
+                            console.log('Message sent: ' + info.response);
+                        });
+                    }
+                }
+                console.log(heartRate);
+                clients[i].sendUTF(heartRate);
+            }
+            setTimeout(sendMessage,1000);
+        }
+        sendMessage();
+
+    });
+    connection.on('close', function(reasonCode, description) {
+        delete clients[id];
+        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    });
+});
 
 // In a browser, http://localhost:4000/fitbit to authorize a user for the first time.
 //
@@ -267,4 +348,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app: app, server: server};

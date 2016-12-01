@@ -49,8 +49,8 @@ $stateProvider
             }
             ,
             'content@': {
-                templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'appointmentController'
+                templateUrl: '/ejs/heartRate.ejs',
+                controller: 'heartRateController'
             }
         }
     })
@@ -64,8 +64,8 @@ $stateProvider
             }
             ,
             'content@': {
-                templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'appointmentController'
+                templateUrl: '/ejs/doctorDirectory.ejs',
+                controller: 'doctorDirectoryController'
             }
         }
     })
@@ -133,7 +133,102 @@ fetchFitbitData = function () {
 }]);
 
 
+patientDashApp.controller('heartRateController',['$scope','$http','$state','$window',function($scope,$http,$state,$window){
+    $scope.getData=function(){
+        //console.log('inside test');
+        var socket = new WebSocket('ws://localhost:3000', 'echo-protocol');
+        $scope.socket=socket;
 
+
+        $scope.createSocket=function(){
+
+            //$scope.score=0;
+            //$scope.socket.disconnect();
+        }
+        var flag=0;
+        $scope.waitForConnection=function() {
+            if (socket.readyState == 1) {
+                flag=1;
+                $scope.readingArr = [];
+                $scope.socket.addEventListener("message", function(e) {
+                    // The data is simply the message that we're sending back
+                    // Create the chart
+                    console.log(e.data);
+                    $scope.readingArr.push(e.data);
+                    //$scope.requestData(e.data);
+                });
+                function  closeIt() {
+                    $scope.socket.close();
+                }
+                //setTimeout(closeIt,10000);
+
+                var chart;
+                console.log("inside create soccet");
+
+                console.log(socket.readyState);
+                $scope.socket.send('hello-  test');
+
+
+                $scope.chart = Highcharts.chart({
+                    chart: {
+                        renderTo: 'graphDiv',
+                        defaultSeriesType: 'spline',
+                        events: {
+                            load: function () {
+
+                                var series = this.series[0];
+                                setInterval(function () {
+                                    var shift = series.data.length > 20,
+                                        point = 0,
+                                        x = new Date().getTime();
+                                    if (typeof $scope.readingArr !== 'undefined' && $scope.readingArr.length > 0) {
+                                        // the array is defined and has at least one element
+                                        point = parseInt($scope.readingArr.shift());
+                                        console.log("New point is : "+point);
+                                    }
+                                    console.log("Adding point : "+point);
+
+                                    series.addPoint([x, point], true, shift);
+                                    console.log(series);
+                                },1000);
+                            }
+                        }
+                    },
+                    title: {
+                        text: 'Live data feed'
+                    },
+
+                    xAxis: {
+                        type: 'datetime',
+                        tickPixelInterval: 150,
+                        maxZoom: 20 * 1000
+                    },
+                    yAxis: {
+                        minPadding: 0.2,
+                        maxPadding: 0.2,
+                        title: {
+                            text: 'Value',
+                            margin: 80
+                        }
+                    },
+
+                    series: [{
+                        name: 'Time',
+                        data: []
+                    }]
+                });
+            }
+            else{
+                setTimeout($scope.waitForConnection,1000);
+            }
+        }
+        if(flag==0){
+            $scope.waitForConnection();
+        }
+
+
+    }
+}]);
 patientDashApp.controller('appointmentController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
     $scope.doctorNames = [];
     $http({
@@ -184,23 +279,49 @@ patientDashApp.controller('appointmentController',['$scope', '$http', '$state', 
         });
     };
 }]);
+
+
+patientDashApp.controller('doctorDirectoryController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+    $scope.doctors = [];
+    $http({
+        method : "GET",
+        url : '/findDoctors'
+    }).success(function(data) {
+        //checking the response data for statusCode
+        if (data.statusCode == 200) {
+            var nums = [1, 2];
+            $scope.doctors = data.result;
+            for (var i=0; i<$scope.doctors.length; i++) {
+                $scope.doctors[i].num = nums[Math.floor(Math.random()*nums.length)]
+            }
+        }
+        else {
+            //handle error
+        }
+    }).error(function(error) {
+        //handle error
+    });
+
+
+}]);
+
 patientDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage', '$window',function($scope, $http, $state,$localStorage, $window) {
 
     getSessionValues = function () {
         $http({
-            method : 'get',
-            url : '/sessionValues'
-        }).success(function(data) {
+            method: 'get',
+            url: '/sessionValues'
+        }).success(function (data) {
             //checking the response data for statusCode
-            console.log("SESSION NAME " +data.name);
-    $scope.userName = data.name;
-        }).error(function(error) {
+            console.log("SESSION NAME " + data.name);
+            $scope.userName = data.name;
+        }).error(function (error) {
             //handle error
         });
     }
     getSessionValues();
 
-    $scope.logout = function() {
+    $scope.logout = function () {
 
         alert("Logout");
         $localStorage.$reset();
