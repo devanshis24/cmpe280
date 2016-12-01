@@ -60,8 +60,8 @@ $stateProvider
             }
             ,
             'content@': {
-                templateUrl: '/ejs/bookAppointment.ejs',
-                controller: 'appointmentController'
+                templateUrl: '/ejs/doctorDirectory.ejs',
+                controller: 'doctorDirectoryController'
             }
         }
     })
@@ -281,4 +281,26 @@ patientDashApp.controller('appointmentController',['$scope', '$http', '$state', 
             //handle error
         });
     };
+}]);
+
+patientDashApp.controller('doctorDirectoryController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+    $scope.doctors = [];
+    $http({
+        method : "GET",
+        url : '/findDoctors'
+    }).success(function(data) {
+        //checking the response data for statusCode
+        if (data.statusCode == 200) {
+            var nums = [1, 2];
+            $scope.doctors = data.result;
+            for (var i=0; i<$scope.doctors.length; i++) {
+                $scope.doctors[i].num = nums[Math.floor(Math.random()*nums.length)]
+            }
+        }
+        else {
+            //handle error
+        }
+    }).error(function(error) {
+        //handle error
+    });
 }]);

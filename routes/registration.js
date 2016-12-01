@@ -29,6 +29,8 @@ exports.signupDoctor=function(req,res){
         userid: req.param("userid"),
         email: req.param("email"),
         password: req.param("password"),
+        gender: req.param("gender"),
+        speciality: req.param("speciality"),
         mobile:req.param("mobile"),
         birthdate:req.param("birthdate")
     });

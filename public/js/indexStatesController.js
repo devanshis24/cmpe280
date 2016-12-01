@@ -166,6 +166,8 @@ routerApp.controller('signupController',['$scope', '$http', '$state', '$window',
                 "email":$scope.email,
                 "password" : $scope.password,
                 "confirmpassword" : $scope.confirmpassword,
+                "gender" : $scope.gender,
+                "speciality" : $scope.speciality,
                 "mobile" : $scope.mobile,
                 "birthdate" : $scope.birthdate
             }
