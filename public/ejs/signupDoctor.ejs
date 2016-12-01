@@ -32,8 +32,24 @@
                 <input type="password" class="form-control" id="confirmPassword1" placeholder="Password" ng-model="confirmpassword">
             </div>
             <div class="form-group">
+                <label for="gender" style="color: aliceblue;">Gender</label>
+                <select class="form-control" name="gender" id="gender" ng-model="gender" tabindex="0">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="speciality" style="color: aliceblue;">Speciality</label>
+                <select class="form-control" name="speciality" id="speciality" ng-model="speciality" tabindex="0">
+                    <option value="Dental Care">Dental Care</option>
+                    <option value="Aging Solution">Aging Solutions</option>
+                    <option value="Eye Care">Eye Care</option>
+                    <option value="Physiotherapy">Physiotherapy</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="exampleInputPassword1" style="color: aliceblue;">Mobile Number</label>
-                <input type="phone" class="form-control" id="mobile" placeholder="Password" ng-model="mobile">
+                <input type="phone" class="form-control" id="mobile" placeholder="Mobile Number" ng-model="mobile">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1" style="color: aliceblue;">Date Of Birth</label>
