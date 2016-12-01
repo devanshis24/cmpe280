@@ -12,7 +12,8 @@ $stateProvider
         url: '/',
         views: {
             'header':{
-                templateUrl: '/ejs/patientHeader.ejs'
+                templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
 
 
             },
@@ -29,6 +30,7 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
@@ -43,6 +45,7 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
@@ -57,6 +60,7 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
@@ -71,6 +75,7 @@ $stateProvider
         views : {
             'header@' : {
                 templateUrl: '/ejs/patientHeader.ejs',
+                controller: 'headerController'
             }
             ,
             'content@': {
@@ -178,4 +183,30 @@ patientDashApp.controller('appointmentController',['$scope', '$http', '$state', 
             //handle error
         });
     };
+}]);
+patientDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage', '$window',function($scope, $http, $state,$localStorage, $window) {
+
+    getSessionValues = function () {
+        $http({
+            method : 'get',
+            url : '/sessionValues'
+        }).success(function(data) {
+            //checking the response data for statusCode
+            console.log("SESSION NAME " +data.name);
+    $scope.userName = data.name;
+        }).error(function(error) {
+            //handle error
+        });
+    }
+    getSessionValues();
+
+    $scope.logout = function() {
+
+        alert("Logout");
+        $localStorage.$reset();
+        $http({
+            method: 'get',
+            url: '/logout'
+        });
+    }
 }]);
