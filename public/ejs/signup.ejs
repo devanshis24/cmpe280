@@ -1,46 +1,167 @@
 <html>
 <head>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
+        /* Styles */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Open Sans";
+            font-size: 14px;
+        }
+
+        .container {
+            width: 500px;
+            margin: 25px auto;
+        }
+
+        form {
+            padding: 20px;
+            background: #2c3e50;
+            color: #fff;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px;
+        }
+        form label,
+        form input,
+        form button {
+            border: 0;
+            margin-bottom: 3px;
+            display: block;
+            width: 100%;
+        }
+        form input {
+            height: 25px;
+            line-height: 25px;
+            background: #fff;
+            color: #000;
+            padding: 0 6px;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        form button {
+            height: 30px;
+            line-height: 30px;
+            background: #e67e22;
+            color: #fff;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        form .error {
+            color: #ff0000;
+        }
+    </style>
+    <script>
+        $(function() {
+            $.validator.addMethod("regex", function(value, element, regexpr) {
+                return regexpr.test(value);
+            }, "Please enter a valid mobile number.");
+
+            $("form[name='patientForm']").validate({
+                // Specify validation rules
+                rules: {
+
+                    fullname: {
+                        minlength: 1
+                    },
+                    userid: {
+                        minlength: 1
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                        minlength: 1
+
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 20
+                    },
+                    confirmpassword:{
+                        equalTo: '#password'
+                    },
+                    mobile: {
+                        minlength :10,
+                        maxlength :10,
+                        regex: /^(\+\d{1,3}[- ]?)?\d{10}$/
+        }
+        },
+            // Specify validation error messages
+            messages: {
+                fullname: {
+                    minlength:"Please enter your firstname"
+                },
+                userid: "Please enter your userid",
+                        password: {
+                    required: "Please provide a password",
+                            minlength: "Your password must be at least 5 characters long",
+                            maxlength: "Your password must be at most 20 characters long"
+                },
+                email: "Please enter a valid email address",
+
+                        confirmpassword : {
+                    required : "Please Confirm your Password",
+                            equalTo: "Password Doesnot Match"
+                }
+            }
+        });
+
+            $("form[name='patientForm']").on('keyup blur', function () {
+                if ($("form[name='patientForm']").valid()) {
+                    $('#submitButton').prop('disabled', false);
+                } else {
+                    $('#submitButton').prop('disabled', 'disabled');
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="container-fluid" style="margin-top: 80px;background-color: aliceblue;vertical-align: middle">
     <div class="col-sm-4"></div>
     <div class="col-sm-4" style="background-color:#364150;border-color: aliceblue;border-style: solid;border-width: 2px;border-radius: 15px 50px;padding: 10px">
         <div class="navbar" style="height: 20px;background-color: #2b3643;color: aliceblue;font-size: larger;padding: 10px"><center><b style="">Register AS PATIENT</b></center></div>
-        <form>
+        <form name="patientForm">
             <div class="form-group">
-                <label for="exampleInputEmail1" style="color: aliceblue;">Full Name</label>
-                <input type="text" class="form-control" id="fullName" aria-describedby="emailHelp" placeholder="Enter First Name Middle Initial Last Name" ng-model="fullname">
+                <label  style="color: aliceblue;">Full Name</label>
+                <input type="text" class="form-control" id="fullname" name ="fullname"  placeholder="Enter First Name Middle Initial Last Name" ng-model="fullname">
 
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1" style="color: aliceblue;">User Id</label>
-                <input type="text" class="form-control" id="userId" aria-describedby="emailHelp" placeholder="Enter User Id" ng-model="userid">
+                <label  style="color: aliceblue;">User Id</label>
+                <input type="text" class="form-control" id="userid" name="userid"  placeholder="Enter User Id" ng-model="userid">
 
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1" style="color: aliceblue;">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" ng-model="email">
+                <label  style="color: aliceblue;">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" ng-model="email">
 
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1" style="color: aliceblue;">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="password">
+                <label style="color: aliceblue;">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="password">
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1" style="color: aliceblue;">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword1" placeholder="Password" ng-model="confirmpassword">
+                <label  style="color: aliceblue;">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Password" ng-model="confirmpassword">
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1" style="color: aliceblue;">Mobile Number</label>
-                <input type="phone" class="form-control" id="mobile" placeholder="Password" ng-model="mobile">
+                <label  style="color: aliceblue;">Mobile Number</label>
+                <input type="phone" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number" ng-model="mobile">
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1" style="color: aliceblue;">Date Of Birth</label>
-                <input type="date" class="form-control" id="birthDate" placeholder="Select your Date of Birth" ng-model="birthdate">
+                <label  style="color: aliceblue;">Date Of Birth</label>
+                <input type="date" class="form-control" id="birthdate" placeholder="Select your Date of Birth" ng-model="birthdate">
             </div>
 
-            <center><button type="submit" class="btn btn-primary" style="background-color: #2b3643;border-color: aliceblue;width: 150px" ng-click="signup()">Register</button></center>
+            <center><button type="submit" class="btn btn-primary" id="submitButton" disabled="disabled" style="background-color: #2b3643;border-color: aliceblue;width: 150px" ng-click="signup()">Register</button></center>
         </form>
         <p style="margin-top: 10px"> Don't have an account?<span> Register as patient or client using menubar at top-right</span></p>
     </div>
