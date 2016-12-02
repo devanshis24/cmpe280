@@ -308,7 +308,7 @@ app.get('/logout', function (req,res,next) {
   console.log(req.session.user);
   req.session.destroy();
     console.log("destroyed " + req.session.user);
-        res.redirect("/");
+        res.send({statusCode:200});
 //res.render("index" , {title : Fitbit});
 });
 
