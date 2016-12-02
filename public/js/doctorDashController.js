@@ -346,7 +346,16 @@ doctorDashApp.controller('headerController',['$scope', '$http', '$state','$local
         $http({
             method: 'get',
             url: '/logout'
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                window.location.assign('/');
+            }
+
+        }).error(function (error) {
+            //window.location.href("error?message=Error");
         });
+
     }
 
 }]);

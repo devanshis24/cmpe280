@@ -324,14 +324,23 @@ patientDashApp.controller('headerController',['$scope', '$http', '$state','$loca
     }
     getSessionValues();
 
-    $scope.logout = function () {
+    $scope.logout = function() {
 
         alert("Logout");
         $localStorage.$reset();
         $http({
             method: 'get',
             url: '/logout'
+        }).success(function (data) {
+            //checking the response data for statusCode
+            if (data.statusCode == 200) {
+                window.location.assign('/');
+            }
+
+        }).error(function (error) {
+            //window.location.href("error?message=Error");
         });
+
     }
 }]);
 
