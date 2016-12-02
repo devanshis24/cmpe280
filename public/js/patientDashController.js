@@ -335,7 +335,7 @@ patientDashApp.controller('headerController',['$scope', '$http', '$state','$loca
     }
 }]);
 
-patientDashApp.controller('chatPatientController',['$scope','$http','$state',function($scope,$http,$state){
+patientDashApp.controller('chatPatientController',['$scope', '$http', '$state', '$timeout', function($scope, $http, $state, $timeout){
     $scope.getDoctors=function () {
         $scope.doctorNames = [];
         $http({
@@ -370,10 +370,10 @@ patientDashApp.controller('chatPatientController',['$scope','$http','$state',fun
         }).success(function (data) {
             //checking the response data for statusCode
             if (data.statusCode == 200) {
-                //console.log("Successfully Logged In")
-                //login success
-
-                //window.location.assign('/fitbitAuth');
+                $scope.showMessage = true;
+                $timeout(function () {
+                    $scope.showMessage = false;
+                }, 5000);
             }
             else if (data.statusCode == 404) {
                 //alert(" User doesnot exists ! Pleasecheck you email or password. ");

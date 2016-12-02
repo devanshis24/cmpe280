@@ -210,7 +210,7 @@ doctorDashApp.controller('doctorScheduleController', function($scope, $compile, 
     $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
 
 });
-doctorDashApp.controller('chatDoctorController',['$scope','$http','$state',function($scope,$http,$state){
+doctorDashApp.controller('chatDoctorController',['$scope', '$http', '$state', '$timeout',function($scope, $http, $state, $timeout){
     $scope.getMessages=function(){
         $http({
             method: "get",
@@ -269,10 +269,10 @@ doctorDashApp.controller('chatDoctorController',['$scope','$http','$state',funct
         }).success(function (data) {
             //checking the response data for statusCode
             if (data.statusCode == 200) {
-                //console.log("Successfully Logged In")
-                //login success
-
-                //window.location.assign('/fitbitAuth');
+                $scope.showMessage = true;
+                $timeout(function () {
+                    $scope.showMessage = false;
+                }, 5000);
             }
             else if (data.statusCode == 404) {
                 //alert(" User doesnot exists ! Pleasecheck you email or password. ");
@@ -384,20 +384,20 @@ doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$l
     }
     getPatientData();
 
-    $scope.getPatient = function(person){
+    $scope.acceptAppointment = function(appointment){
 
         $http({
             method: 'post',
             url: '/acceptAppointment',
-            data: {"name": person.name,"service":person.service,
+            data: {"name": appointment.name,"service":appointment.service,
             "doctorName" : $localStorage.doctorName}
 
         }).success(function (data) {
             //checking the response data for statusCode
             if(data.statusCode == "200") {
-                //alert("success patient Data : " + JSON.stringify(data));
-                //$scope.appointments = data.result1;
-
+                var idx = _.findIndex($scope.appointments, {"name": appointment.name,"service":appointment.service,
+                    "doctorName" : $localStorage.doctorName} );
+                $scope.appointments.splice(idx, 1);
             }
             else if(data.statusCode == "500") {
                 console.log("500 error");
