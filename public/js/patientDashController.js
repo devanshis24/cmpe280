@@ -90,46 +90,452 @@ $stateProvider
 
 
 patientDashApp.controller('patientController',['$scope','$http','$state',function($scope,$http,$state){
-fetchFitbitData = function () {
+
+    fetchFitbitData = function () {
+
         $http({
+
             method : "get",
-            url : "/fb-profile"
+
+            url : "/heart-daily"
+
         }).success(function (data) {
+
             if(data.statusCode == 200) {
+
                 console.log(data);
+
                 $scope.hello = data;
-                Highcharts.chart('calorieContainer', {
 
-                    xAxis: {
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                    },
-
-                    series: [{
-                        data: data.calorieData
-                    }]
-                });
                 Highcharts.chart('heartContainer', {
 
+
+
                     xAxis: {
+
                         categories: data.time
+
                     },
 
+
+
                     series: [{
+
                         data: data.heart
-                    }]
+
+                    },
+
+                        {
+
+                            data: data.heart2
+
+                        }]
+
                 });
+
             }
+
             else
-                {
-                    console.log("eror")
-                }
+
+            {
+
+                console.log("eror")
+
+            }
+
         }).error(function(error) {
+
             //handle error
+
         });
+
     }
 
+
+
     fetchFitbitData();
+
+
+
+    fetchFitbitData1 = function () {
+
+        $http({
+
+            method : "get",
+
+            url : "/calorie-daily"
+
+        }).success(function (data) {
+
+            if(data.statusCode == 200) {
+
+                console.log(data);
+
+                $scope.hello = data;
+
+                Highcharts.chart('calorieContainer', {
+
+
+
+                    xAxis: {
+
+                        categories: data.time
+
+                    },
+
+
+
+                    series: [{
+
+                        data: data.value
+
+                    }],
+
+                    series: [{
+
+                        data: data.value
+
+                    }]
+
+                });
+
+            }
+
+            else
+
+            {
+
+                console.log("eror")
+
+            }
+
+        }).error(function(error) {
+
+            //handle error
+
+        });
+
+    }
+
+
+
+    fetchFitbitData1();
+
+
+
+    fetchFitbitData2 = function () {
+
+        $http({
+
+            method : "get",
+
+            url : "/steps-daily"
+
+        }).success(function (data) {
+
+            console.log(data);
+
+            if(data.statusCode == 200) {
+
+                console.log(data);
+
+                $scope.hello = data;
+
+                Highcharts.chart('stepsCointainer', {
+
+
+
+                    xAxis: {
+
+                        categories: data.time
+
+                    },
+
+
+
+                    series: [{
+
+                        data: data.value
+
+                    }],
+
+                    series: [{
+
+                        data: data.value
+
+                    }]
+
+                });
+
+            }
+
+            else
+
+            {
+
+                console.log("eror")
+
+            }
+
+        }).error(function(error) {
+
+            //handle error
+
+        });
+
+    }
+
+
+
+    fetchFitbitData2();
+
+
+
+
+
+//dynamic date code
+
+    fetchCaloriesDynamically = function () {
+
+
+
+        $http({
+
+            method : "post",
+
+            url : "/calorie-dynamic",
+
+            data : {
+
+                "dateA": $scope.start
+
+            }
+
+
+
+        }).success(function (data) {
+
+
+
+            console.log(data);
+
+            if(data.statusCode == 200) {
+
+                console.log(data);
+
+                $scope.hello = data;
+
+                Highcharts.chart('calorieContainerDynamic', {
+
+
+
+                    xAxis: {
+
+                        categories: data.time
+
+                    },
+
+
+
+                    series: [{
+
+                        data: data.value
+
+                    }],
+
+                    series: [{
+
+                        data: data.value
+
+                    }]
+
+                });
+
+            }
+
+            else
+
+            {
+
+                console.log("eror")
+
+            }
+
+        }).error(function(error) {
+
+            //handle error
+
+        });
+
+    }
+
+    fetchHeartDynamically = function () {
+
+
+
+        $http({
+
+            method : "post",
+
+            url : "/heart-dynamic",
+
+            data : {
+
+                "dateA": $scope.start
+
+            }
+
+
+
+        }).success(function (data) {
+
+
+
+            console.log(data);
+
+            if(data.statusCode == 200) {
+
+                console.log(data);
+
+                $scope.hello = data;
+
+                Highcharts.chart('heartContainerDynamic', {
+
+
+
+                    xAxis: {
+
+                        categories: data.time
+
+                    },
+
+
+
+                    series: [{
+
+                        data: data.value
+
+                    }],
+
+                    series: [{
+
+                        data: data.value
+
+                    }]
+
+                });
+
+            }
+
+            else
+
+            {
+
+                console.log("eror")
+
+            }
+
+        }).error(function(error) {
+
+            //handle error
+
+        });
+
+    }
+
+
+    fetchStepsDynamically = function () {
+
+
+
+        $http({
+
+            method : "post",
+
+            url : "/steps-dynamic",
+
+            data : {
+
+                "dateA": $scope.start
+
+            }
+
+
+
+        }).success(function (data) {
+
+            console.log(data);
+
+            if(data.statusCode == 200) {
+
+                console.log(data);
+
+                $scope.hello = data;
+
+                Highcharts.chart('stepsContainerDynamic', {
+
+
+
+                    xAxis: {
+
+                        categories: data.time
+
+                    },
+
+
+
+                    series: [{
+
+                        data: data.value
+
+                    }],
+
+                    series: [{
+
+                        data: data.value
+
+                    }]
+
+                });
+
+            }
+
+            else
+
+            {
+
+                console.log("eror")
+
+            }
+
+            return data.value;
+
+        }).error(function(error) {
+
+            //handle error
+
+        });
+
+    }
+
+
+
+
+
+    $scope.fetchDynamicDate = function(){
+
+        fetchCaloriesDynamically();
+
+        fetchStepsDynamically();
+
+        fetchHeartDynamically();
+
+
+
+    }
+
+
+
 }]);
 
 

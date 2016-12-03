@@ -183,7 +183,7 @@ app.get('/patientDashboard', function (req,res,next) {
   res.render('patientDashBoard');
 
 })
-app.get( '/fb-profile', function( req, res, next ) {
+app.get( '/heart-daily', function( req, res, next ) {
     console.log("abcd : ");
     persist.read( tfile, function( err, token ) {
         if (err) {
@@ -197,13 +197,14 @@ app.get( '/fb-profile', function( req, res, next ) {
 
 
         fitbit.request({
-            uri: "https://api.fitbit.com/1/user/-/activities/heart/date/2016-11-21/1d/1sec/time/00:00/12:01.json",
+//          uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
+            uri: "https://api.fitbit.com/1/user/-/activities/heart/date/2016-11-29/1d/15min/time/00:00/23:59.json",
             method: 'GET',
         }, function( err, body, token ) {
             if ( err ) return next( err );
             var profile = JSON.parse( body );
             // if token is not null, a refesh has happened and we need to persist the new token
-            console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
+            //console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
             if ( token ) {
                 console.log("abcd123 : " + token);
                 persist.write( tfile, token, function( err ) {
@@ -245,9 +246,9 @@ app.get( '/fb-profile', function( req, res, next ) {
                 heartTime[i] = obj[i].time;
             }
             var ress = {
-              statusCode: 200,
+                statusCode: 200,
                 time: heartTime
-              ,
+                ,
                 heart: jsonArr};
 
             res.send(ress);
@@ -255,7 +256,7 @@ app.get( '/fb-profile', function( req, res, next ) {
     });
 });
 
-app.get( '/fb-dyn', function( req, res, next ) {
+app.get( '/steps-daily', function( req, res, next ) {
     console.log("abcd : ");
     persist.read( tfile, function( err, token ) {
         if (err) {
@@ -269,18 +270,96 @@ app.get( '/fb-dyn', function( req, res, next ) {
 
 
         fitbit.request({
-            uri: "https://api.fitbit.com/1/user/-/activities/heart/date/2016-11-21/1d/1sec/time/00:00/12:01.json",
+            uri: "https://api.fitbit.com/1/user/-/activities/steps/date/2016-11-29/1d/15min/time/00:00/23:59.json",
+
+            //            uri: "https://api.fitbit.com/1/user/-/activities/floors/date/2016-11-21/1d/15min/time/00:30/12:45.json",
+//        	uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
             method: 'GET',
         }, function( err, body, token ) {
             if ( err ) return next( err );
             var profile = JSON.parse( body );
             // if token is not null, a refesh has happened and we need to persist the new token
-            console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
+            //console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
             if ( token ) {
                 console.log("abcd123 : " + token);
                 persist.write( tfile, token, function( err ) {
                     if ( err ) return next( err );
-                    res.send({statusCode:200},{data1 : profile });
+                    //res.send({statusCode:200},{data1 : profile });
+                });
+
+            }
+            else
+            // res.status(200).send({data1 : profile});
+                var jsonArr = [];
+            var calorieTime = [];
+            var obj = [];
+            obj = profile["activities-steps-intraday"].dataset;
+
+
+
+            for(var i = 0; i < obj.length ; i++){
+                jsonArr[i] = obj[i].value;
+                calorieTime[i] = obj[i].time;
+            }
+            var ress = {
+                statusCode: 200,
+                time: calorieTime
+                ,
+                value: jsonArr};
+
+            res.send(ress);
+        });
+    });
+});
+
+
+app.get( '/calorie-daily', function( req, res, next ) {
+    console.log("abcd : ");
+    persist.read( tfile, function( err, token ) {
+        if (err) {
+            console.log(err);
+            process.exit(1);
+        }
+
+        // Set the client's token
+        console.log("token : " + token.toString());
+        fitbit.setToken(token);
+
+
+        fitbit.request({
+            uri: "https://api.fitbit.com/1/user/-/activities/calories/date/2016-11-29/1d/15min/time/00:00/23:59.json",
+
+            //            uri: "https://api.fitbit.com/1/user/-/activities/floors/date/2016-11-21/1d/15min/time/00:30/12:45.json",
+//        	uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
+            method: 'GET',
+        }, function( err, body, token ) {
+            if ( err ) return next( err );
+            var profile = JSON.parse( body );
+            // if token is not null, a refesh has happened and we need to persist the new token
+            //console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
+            if ( token ) {
+                console.log("abcd123 : " + token);
+                persist.write( tfile, token, function( err ) {
+                    if ( err ) return next( err );
+                    //res.send({statusCode:200},{data1 : profile });
+                    var jsonArr = [];
+                    var calorieTime = [];
+                    var obj = [];
+                    obj = profile["activities-calorie-intraday"].dataset;
+
+
+
+                    for(var i = 0; i < obj.length ; i++){
+                        jsonArr[i] = obj[i].value;
+                        calorieTime[i] = obj[i].time;
+                    }
+                    var ress = {
+                        statusCode: 200,
+                        time: heartTime
+                        ,
+                        value: jsonArr};
+
+                    res.send(ress);
                     //res.send( '<pre>' + JSON.stringify( profile, null, 2 ) + '</pre>' );
                 });
 
@@ -288,21 +367,213 @@ app.get( '/fb-dyn', function( req, res, next ) {
             else
             // res.status(200).send({data1 : profile});
                 var jsonArr = [];
+            var calorieTime = [];
             var obj = [];
-            obj = profile["activities-heart-intraday"].dataset;
+            obj = profile["activities-calories-intraday"].dataset;
 
 
 
             for(var i = 0; i < obj.length ; i++){
                 jsonArr[i] = obj[i].value;
+                calorieTime[i] = obj[i].time;
             }
-            var ress = jsonArr;
+            var ress = {
+                statusCode: 200,
+                time: calorieTime
+                ,
+                value: jsonArr};
 
             res.send(ress);
         });
     });
 });
 
+
+app.post( '/calorie-dynamic', function( req, res, next ) {
+
+    var datedyn = req.param('dateA');
+    console.log(datedyn);
+    persist.read( tfile, function( err, token ) {
+        if (err) {
+            console.log(err);
+            process.exit(1);
+        }
+
+        // Set the client's token
+        console.log("token : " + token.toString());
+        fitbit.setToken(token);
+
+
+        fitbit.request({
+            uri: "https://api.fitbit.com/1/user/-/activities/calories/date/"+datedyn+"/1d/15min/time/00:00/23:59.json",
+
+            //            uri: "https://api.fitbit.com/1/user/-/activities/floors/date/2016-11-21/1d/15min/time/00:30/12:45.json",
+//        	uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
+            method: 'GET'
+        }, function( err, body, token ) {
+            if ( err ) return next( err );
+            var profile = JSON.parse( body );
+            // if token is not null, a refesh has happened and we need to persist the new token
+            //console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
+            if ( token ) {
+                console.log("abcd123 : " + token);
+                persist.write( tfile, token, function( err ) {
+                    if ( err ) return next( err );
+                    //res.send({statusCode:200},{data1 : profile });
+                    var jsonArr = [];
+                    var calorieTime = [];
+                    var obj = [];
+                    console.log("XYZ"+profile);
+                    obj = profile["activities-calorie-intraday"].dataset;
+
+
+
+                    for(var i = 0; i < obj.length ; i++){
+                        jsonArr[i] = obj[i].value;
+                        calorieTime[i] = obj[i].time;
+                    }
+                    var ress = {
+                        statusCode: 200,
+                        time: heartTime
+                        ,
+                        value: jsonArr};
+
+                    res.send(ress);
+                    //res.send( '<pre>' + JSON.stringify( profile, null, 2 ) + '</pre>' );
+                });
+
+            }
+            else
+            // res.status(200).send({data1 : profile});
+                var jsonArr = [];
+            var calorieTime = [];
+            var obj = [];
+            obj = profile["activities-calories-intraday"].dataset;
+
+
+
+            for(var i = 0; i < obj.length ; i++){
+                jsonArr[i] = obj[i].value;
+                calorieTime[i] = obj[i].time;
+            }
+            var ress = {
+                statusCode: 200,
+                time: calorieTime
+                ,
+                value: jsonArr};
+
+            res.send(ress);
+        });
+    });
+});
+
+app.post( '/heart-dynamic', function( req, res, next ) {
+
+    var datedyn = req.param('dateA');
+    console.log(datedyn);
+    persist.read( tfile, function( err, token ) {
+        if (err) {
+            console.log(err);
+            process.exit(1);
+        }
+
+        // Set the client's token
+        console.log("token : " + token.toString());
+        fitbit.setToken(token);
+
+
+        fitbit.request({
+            uri: "https://api.fitbit.com/1/user/-/activities/heart/date/"+datedyn+"/1d/15min/time/00:00/23:59.json",
+
+            //            uri: "https://api.fitbit.com/1/user/-/activities/floors/date/2016-11-21/1d/15min/time/00:30/12:45.json",
+//        	uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
+            method: 'GET'
+        }, function( err, body, token ) {
+            if ( err ) return next( err );
+            var profile = JSON.parse( body );
+            // if token is not null, a refesh has happened and we need to persist the new token
+            //console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-heart-intraday"].dataset[0].value));
+            if ( token ) {
+                console.log("abcd123 : " + token);
+                persist.write( tfile, token, function( err ) {
+                    if ( err ) return next( err );
+                    //res.send({statusCode:200},{data1 : profile });
+                });
+            }
+            else
+                var jsonArr = [];
+            var heartTime = [];
+            var obj = [];
+            obj = profile["activities-heart-intraday"].dataset;
+
+            for(var i = 0; i < obj.length ; i++){
+                jsonArr[i] = obj[i].value;
+                heartTime[i] = obj[i].time;
+            }
+            var ress = {
+                statusCode: 200,
+                time: heartTime
+                ,
+                value: jsonArr};
+
+            res.send(ress);
+        });
+    });
+});
+
+app.post( '/steps-dynamic', function( req, res, next ) {
+
+    var datedyn = req.param('dateA');
+    console.log(datedyn);
+    persist.read( tfile, function( err, token ) {
+        if (err) {
+            console.log(err);
+            process.exit(1);
+        }
+
+        // Set the client's token
+        console.log("token : " + token.toString());
+        fitbit.setToken(token);
+
+
+        fitbit.request({
+            uri: "https://api.fitbit.com/1/user/-/activities/steps/date/"+datedyn+"/1d/15min/time/00:00/23:59.json",
+
+            //            uri: "https://api.fitbit.com/1/user/-/activities/floors/date/2016-11-21/1d/15min/time/00:30/12:45.json",
+//        	uri: "https://api.fitbit.com/1/user/-/activities/steps/date/today/1d.json",
+            method: 'GET'
+        }, function( err, body, token ) {
+            if ( err ) return next( err );
+            var profile = JSON.parse( body );
+            // if token is not null, a refesh has happened and we need to persist the new token
+            //console.log("token : " + token + "aaa " + JSON.stringify(profile["activities-steps-intraday"].dataset[0].value));
+            if ( token ) {
+                console.log("abcd123 : " + token);
+                persist.write( tfile, token, function( err ) {
+                    if ( err ) return next( err );
+                    //res.send({statusCode:200},{data1 : profile });
+                });
+            }
+            else
+                var jsonArr = [];
+            var stepsTime = [];
+            var obj = [];
+            obj = profile["activities-steps-intraday"].dataset;
+
+            for(var i = 0; i < obj.length ; i++){
+                jsonArr[i] = obj[i].value;
+                stepsTime[i] = obj[i].time;
+            }
+            var ress = {
+                statusCode: 200,
+                time: stepsTime
+                ,
+                value: jsonArr};
+
+            res.send(ress);
+        });
+    });
+});
 
 app.get('/logout', function (req,res,next) {
   console.log(req.session.user);
