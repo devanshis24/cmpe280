@@ -791,7 +791,7 @@ patientDashApp.controller('headerController',['$scope', '$http', '$state','$loca
 
     $scope.logout = function() {
 
-        alert("Logout");
+
         $localStorage.$reset();
         $http({
             method: 'get',
