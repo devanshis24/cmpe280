@@ -134,12 +134,18 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider,$translateProvi
 
 
 
-doctorDashApp.controller('doctorScheduleController', function($scope, $compile, $timeout, uiCalendarConfig) {
+doctorDashApp.controller('doctorScheduleController', function($scope, $filter, $compile, $timeout, uiCalendarConfig) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
 
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    $scope.data = [];
+    $scope.q = '';
+    
+    
     $scope.changeTo = 'Hungarian';
     /* event source that pulls from google.com */
     $scope.eventSource = {
@@ -439,7 +445,15 @@ doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$l
         });
     }
     getPatientData();
-
+    $scope.getData = function () {
+ 	   // needed for the pagination calc
+ 	   // https://docs.angularjs.org/api/ng/filter/filter
+ 	   return $filter('filter')($scope.appointments.name, $scope.q);
+ }
+    $scope.numberOfPages=function(){
+        return Math.ceil($scope.getData().length/$scope.pageSize);                
+    }
+    
     $scope.acceptAppointment = function(appointment){
 
         $http({
@@ -470,3 +484,9 @@ doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$l
     //ng-class='{selected: isSelected(person)}'
 }]);
 
+doctorDashApp.filter('startFrom', function() {
+	 return function(input, start) {
+	     start = +start; //parse to int
+	     return input.slice(start);
+	 }
+	});
