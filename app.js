@@ -71,6 +71,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+var currentUser = {};
+
 wsServer.on('request', function(r){
     // Code here to run on connection
     var connection = r.accept('echo-protocol', r.origin);
@@ -84,12 +86,10 @@ wsServer.on('request', function(r){
     var count=0;
     // Create event listener
     connection.on('message', function(message) {
-
-
         // The string message that was sent to us
         var msgString = message.utf8Data;
-
         console.log(msgString);
+
         // Loop through all clients
         function sendMessage() {
             for (var i in clients) {
@@ -118,8 +118,8 @@ wsServer.on('request', function(r){
                         var mailOptions = {
                             from: '"ehealth 👥" <ehealth.cmpe280@gmail.com>', // sender address
                             to: 'raghavendra.kps88@gmail.com', // list of receivers
-                            subject: 'Hello ✔', // Subject line
-                            text: 'Hello world 🐴', // plaintext body
+                            subject: "Condition Report: " + currentUser.name, // Subject line
+                            text: "Heart Rate of " + currentUser.name + " is out of normal range. Please take care of him / her.", // plaintext body
                             html: '<b>Hello world 🐴</b>' // html body
                         };
 
@@ -165,17 +165,17 @@ app.post('/addMessage',message.addMessage);
 // config below.
 //
 app.get('/callback', function (req, res, next) {
-  var code = req.query.code;
-  fitbit.fetchToken( code, function( err, token ) {
-    if ( err ) return next( err );
+    currentUser = req.session.user;
+    var code = req.query.code;
+    fitbit.fetchToken( code, function( err, token ) {
+        if ( err ) return next( err );
 
-    // persist the token
-    persist.write( tfile, token, function( err ) {
-      if ( err ) return next( err );
-
+        // persist the token
+        persist.write( tfile, token, function( err ) {
+            if ( err ) return next( err );
+        });
     });
-  });
-  res.render('patientDashBoard');
+    res.render('patientDashBoard');
 });
 app.get('/doctorDash', doctor.doctorDash);
 app.get('/getMessages',message.getMessages);
