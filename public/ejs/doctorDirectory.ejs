@@ -8,8 +8,8 @@
                 <div class="navbar" style="height: 20px;color: aliceblue;font-size: larger;padding: 10px"><center><b style="">DOCTOR DIRECTORY</b></center></div>
             </div>
             <div class="row" style="padding:100px;">
-                <div class="col-sm-4" ng-repeat="doctor in doctors">
-                    <img class="img-responsive" style="height:400px;width:400px;"ng-src="../img/doctor-{{doctor.gender}}-{{doctor.num}}.jpg"><br>
+                <div class="col-sm-4" style="padding-bottom:10px;" ng-repeat="doctor in doctors">
+                    <img class="img-responsive img-circle" style="height:400px;width:400px;"ng-src="../img/doctor-{{doctor.gender}}-{{doctor.num}}.jpg"><br>
                     <div style="text-align: center; font-weight: bold;">{{doctor.name}}</div>
                     <div style="text-align: center; font-weight: bold;">{{doctor.speciality}}</div>
                 </div>
