@@ -25,11 +25,6 @@ var fs      = require( 'fs' );
 var config  = require( './config.json' );
 var Fitbit  = require( 'fitbit-oauth2' );
 // view engine setup
-
-
-
-
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -70,6 +65,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+var currentUser = {};
 
 wsServer.on('request', function(r){
     // Code here to run on connection
@@ -118,8 +115,8 @@ wsServer.on('request', function(r){
                         var mailOptions = {
                             from: '"ehealth 👥" <ehealth.cmpe280@gmail.com>', // sender address
                             to: 'raghavendra.kps88@gmail.com', // list of receivers
-                            subject: 'Hello ✔', // Subject line
-                            text: 'Hello world 🐴', // plaintext body
+                            subject: "Condition Report: " + currentUser.name, // Subject line
+                            text: "Heart Rate of " + currentUser.name + " is out of normal range. Please take care of him / her.", // plaintext body
                             html: '<b>Hello world 🐴</b>' // html body
                         };
 
@@ -150,11 +147,11 @@ wsServer.on('request', function(r){
 //
 app.get('/fitbitAuth', function (req, res) {
   if(req.session.user){
-    console.log("Session created : "+ req.session.user);
-  res.redirect( fitbit.authorizeURL() );
+      currentUser = req.session.user;
+      console.log("Session created : "+ req.session.user);
+      res.redirect( fitbit.authorizeURL() );
   }
-  else
-  {
+  else {
     console.log("Session Error");
   }
 });
