@@ -712,10 +712,11 @@ patientDashApp.controller('doctorDirectoryController',['$scope', '$http', '$stat
     }).success(function(data) {
         //checking the response data for statusCode
         if (data.statusCode == 200) {
-            var nums = [1, 2];
+            var maleNum = 1;
+            var femaleNum = 1;
             $scope.doctors = data.result;
             for (var i=0; i<$scope.doctors.length; i++) {
-                $scope.doctors[i].num = nums[Math.floor(Math.random()*nums.length)]
+                $scope.doctors[i].num = $scope.doctors[i].gender == 'male' ? maleNum++ : femaleNum++;
             }
         }
         else {
