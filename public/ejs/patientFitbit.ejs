@@ -1,10 +1,59 @@
-<div style="width: 90%;">
-<div>provide dates</div>
-    <input type="number" id="start">
-    <input type="number" id="end">
-    <input type="submit" ng-click="showData()">
 
-    <div style="width: 50%; float: left; padding: 15px;" id="calorieContainer">Placeholder for chart</div>
-    <div style="width: 50%; float: right; padding: 15px;" id="heartContainer">Placeholder for chart</div>
+<style>
+
+
+
+    /*==========  Mobile First Method  ==========*/
+    @media only screen and (max-width : 320px) {
+        .clearfix{
+            width: 100% !important;
+            clear: both !important;
+        }
+    }
+
+    /* Extra Small Devices, Phones */
+    @media only screen and (max-width : 480px) {
+        .clearfix{
+            width: 100% !important;
+            clear: both !important;
+        }
+    }
+
+    /* Small Devices, Tablets */
+    @media only screen and (max-width : 768px) {
+        .clearfix{
+            width: 100% !important;
+            clear: both !important;
+        }
+    }
+
+    /* Medium Devices, Desktops */
+    @media only screen and (max-width : 992px) {
+
+    }
+
+    /* Large Devices, Wide Screens */
+    @media only screen and (max-width : 1200px) {
+
+    }
+
+    .pad_50{
+        padding: 15px; width:45%; float:left;    }
+</style><div style="padding-top:50px; width:90%; margin:0 auto;">
+    <div>provide dates</div>
+    <form>
+        <input type="date" id="start" ng-model="start">
+        <!--    <input type="date" id="end" id="start" ng-model="end">-->
+        <input type="submit" ng-click="fetchDynamicDate()">
+        <!--    <input type="submit" ng-click="demoData()">-->
+    </form>
+
+    <div class="col-xs-6 container-fluid row clearfix" id="calorieContainer">Calories</div>
+    <div class="col-xs-6 container-fluid row clearfix" id="calorieContainerDynamic">Dynamic Calories</div>
+    <div class="col-xs-6 container-fluid row clearfix" id="heartContainer">Heart Beats</div>
+    <div class="col-xs-6 container-fluid row clearfix" id="heartContainerDynamic">Dynamic Heart Beats</div>
+    <div class="col-xs-6 container-fluid row clearfix" id="stepsCointainer">Steps</div>
+    <div class="col-xs-6 container-fluid row clearfix" id="stepsContainerDynamic">Dynamic Steps Steps</div>
+
 </div>
 <div id="dynamic_data"></div>
