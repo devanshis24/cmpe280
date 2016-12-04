@@ -1,7 +1,7 @@
 /**
  * Created by devanshis24 on 11/26/2016.
  */
-var patientDashApp = angular.module('patientDashApp', ['ui.router', 'ngStorage']);
+var patientDashApp = angular.module('patientDashApp', ['ui.router', 'ngStorage','highcharts-ng']);
 patientDashApp.config(function($stateProvider, $urlRouterProvider) {
 $urlRouterProvider.otherwise('/');
 
@@ -103,16 +103,31 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
             if(data.statusCode == 200) {
 
-                console.log(data);
+                $scope.heart = {
 
-                $scope.hello = data;
+                    options: {
 
-                Highcharts.chart('heartContainer', {
+                        chart: {
 
-                    title: {
-                        text: 'Daily Heart Rate'
+                            type: 'line',
+
+                            zoomType: 'x'
+
+                        }
+
                     },
 
+                    series: [{
+
+                        data: data.value
+
+                    }],
+
+                    title: {
+
+                        text: 'Your Heart Bit'
+
+                    },
 
                     xAxis: {
 
@@ -120,21 +135,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                     },
 
+                    loading: false
 
-
-                    series: [{
-                        name: "Heart Rate",
-                        data: data.heart
-
-                    },
-
-                        {
-
-                            data: data.heart2
-
-                        }]
-
-                });
+                }
 
             }
 
@@ -172,14 +175,30 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
             if(data.statusCode == 200) {
 
-                console.log(data);
+                $scope.calorie = {
 
-                $scope.hello = data;
+                    options: {
 
-                Highcharts.chart('calorieContainer', {
+                        chart: {
+
+                            type: 'line',
+
+                            zoomType: 'x'
+
+                        }
+
+                    },
+
+                    series: [{
+
+                        data: data.value
+
+                    }],
 
                     title: {
-                        text: 'Daily Calories'
+
+                        text: 'Your Calories Burnt'
+
                     },
 
                     xAxis: {
@@ -188,21 +207,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                     },
 
+                    loading: false
 
-
-                    series: [{
-                        name: "calories",
-                        data: data.value
-
-                    }],
-
-                    series: [{
-                        name: "calories",
-                        data: data.value
-
-                    }]
-
-                });
+                }
 
             }
 
@@ -242,14 +249,30 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
             if(data.statusCode == 200) {
 
-                console.log(data);
+                $scope.steps = {
 
-                $scope.hello = data;
+                    options: {
 
-                Highcharts.chart('stepsCointainer', {
+                        chart: {
+
+                            type: 'line',
+
+                            zoomType: 'x'
+
+                        }
+
+                    },
+
+                    series: [{
+
+                        data: data.value
+
+                    }],
 
                     title: {
-                        text: 'Daily Steps'
+
+                        text: 'You Walked'
+
                     },
 
                     xAxis: {
@@ -258,21 +281,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                     },
 
+                    loading: false
 
-
-                    series: [{
-                        name: "Steps",
-                        data: data.value
-
-                    }],
-
-                    series: [{
-                        name: "Steps",
-                        data: data.value
-
-                    }]
-
-                });
+                }
 
             }
 
@@ -323,41 +334,18 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
         }).success(function (data) {
 
 
+
             console.log(data);
 
             if(data.statusCode == 200) {
 
                 console.log(data);
 
-                $scope.hello = data;
+                $scope.calorie.series.push({
 
-                Highcharts.chart('calorieContainerDynamic', {
+                    data: data.value
 
-                    title: {
-                        text: 'Dynamic Calorie Count'
-                    },
-
-                    xAxis: {
-
-                        categories: data.time
-
-                    },
-
-
-
-                    series: [{
-                        name: "Calories",
-                        data: data.value
-
-                    }],
-
-                    series: [{
-                        name: "Calories",
-                        data: data.value
-
-                    }]
-
-                });
+                })
 
             }
 
@@ -405,36 +393,11 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 console.log(data);
 
-                $scope.hello = data;
+                $scope.heart.series.push({
 
-                Highcharts.chart('heartContainerDynamic', {
+                    data: data.value
 
-                    title: {
-                        text: 'Dynamic Heart Rate'
-                    },
-
-
-                    xAxis: {
-
-                        categories: data.time
-
-                    },
-
-
-
-                    series: [{
-                        name: "Heart Rate",
-                        data: data.value
-
-                    }],
-
-                    series: [{
-                        name: "Heart Rate",
-                        data: data.value
-
-                    }]
-
-                });
+                })
 
             }
 
@@ -481,36 +444,11 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 console.log(data);
 
-                $scope.hello = data;
+                $scope.steps.series.push({
 
-                Highcharts.chart('stepsContainerDynamic', {
+                    data: data.value
 
-                    title: {
-                        text: 'Dynamic Step Count'
-                    },
-
-
-                    xAxis: {
-
-                        categories: data.time
-
-                    },
-
-
-
-                    series: [{
-                        name: "Steps",
-                        data: data.value
-
-                    }],
-
-                    series: [{
-                        name: "Steps",
-                        data: data.value
-
-                    }]
-
-                });
+                })
 
             }
 

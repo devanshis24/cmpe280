@@ -41,10 +41,10 @@
         padding: 15px; width:45%; float:left;    }
 </style>
 <body>
-<div style="padding-top:50px;margin-top: 150px; width:100%; ">
+<div style="padding-top:50px;margin-top: 50px; width:100%; ">
     <div class="container">
         <div class="row"><center>
-    <div style="font-size: 24px">provide dates</div>
+    <div style="font-size: 32px;color: aliceblue ;">Provide Dates To Compare</div><br>
     <form>
         <input  type="date" id="start" ng-model="start">
         <!--    <input type="date" id="end" id="start" ng-model="end">-->
@@ -53,19 +53,14 @@
     </form></center>
     </div>
         <div class="row" style="padding: 20px">
-            <div class="col-xs-6 " id="heartContainer">Heart Beats</div>
-    <div class="col-xs-6 " id="heartContainerDynamic">Dynamic Heart Beats</div>
+            <highchart id="chart1"style="padding: 20px" config="heart" class="span10 col-xs-6 container-fluid row clearfix"></highchart>
 
-</div>
 
-    <div class="row" style="padding: 20px">
-        <div class="col-xs-6 " id="calorieContainer">Calories</div>
-        <div class="col-xs-6 " id="calorieContainerDynamic">Dynamic Calories</div>
+        <highchart style="padding: 20px" id="chart1" config="calorie" class="span10 col-xs-6 container-fluid row clearfix"></highchart>
 
     </div>
     <div class="row" style="padding: 20px">
-        <div class="col-xs-6  " id="stepsCointainer">Steps</div>
-        <div class="col-xs-6  " id="stepsContainerDynamic">Dynamic Steps Steps</div>
+        <highchart id="chart1" config="steps" class="span10 col-xs-12 container-fluid row clearfix"></highchart>
 
     </div>
     </div>

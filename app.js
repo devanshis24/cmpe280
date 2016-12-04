@@ -195,7 +195,7 @@ app.get( '/heart-daily', function( req, res, next ) {
 
         fitbit.request({
 //          uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
-            uri: "https://api.fitbit.com/1/user/-/activities/heart/date/2016-11-29/1d/15min/time/00:00/23:59.json",
+            uri: "https://api.fitbit.com/1/user/-/activities/heart/date/2016-12-03/1d/15min/time/00:00/23:59.json",
             method: 'GET',
         }, function( err, body, token ) {
             if ( err ) return next( err );
@@ -267,7 +267,7 @@ app.get( '/steps-daily', function( req, res, next ) {
 
 
         fitbit.request({
-            uri: "https://api.fitbit.com/1/user/-/activities/steps/date/2016-11-29/1d/15min/time/00:00/23:59.json",
+            uri: "https://api.fitbit.com/1/user/-/activities/steps/date/2016-12-03/1d/15min/time/00:00/23:59.json",
 
             //            uri: "https://api.fitbit.com/1/user/-/activities/floors/date/2016-11-21/1d/15min/time/00:30/12:45.json",
 //        	uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
@@ -324,7 +324,7 @@ app.get( '/calorie-daily', function( req, res, next ) {
 
 
         fitbit.request({
-            uri: "https://api.fitbit.com/1/user/-/activities/calories/date/2016-11-29/1d/15min/time/00:00/23:59.json",
+            uri: "https://api.fitbit.com/1/user/-/activities/calories/date/2016-12-03/1d/15min/time/00:00/23:59.json",
 
             //            uri: "https://api.fitbit.com/1/user/-/activities/floors/date/2016-11-21/1d/15min/time/00:30/12:45.json",
 //        	uri: "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json",
@@ -384,7 +384,6 @@ app.get( '/calorie-daily', function( req, res, next ) {
         });
     });
 });
-
 
 app.post( '/calorie-dynamic', function( req, res, next ) {
 
