@@ -1,9 +1,100 @@
 /**
  * Created by devanshis24 on 11/26/2016.
  */
-var patientDashApp = angular.module('patientDashApp', ['ui.router', 'ngStorage','highcharts-ng']);
-patientDashApp.config(function($stateProvider, $urlRouterProvider) {
-$urlRouterProvider.otherwise('/');
+var patientDashApp = angular.module('patientDashApp', ['ui.router', 'ngStorage','highcharts-ng', 'pascalprecht.translate']);
+patientDashApp.config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+    $translateProvider.fallbackLanguage('en');
+    $translateProvider.registerAvailableLanguageKeys(['en','es','fr'],{
+        'en_*':'en',
+        'es_*':'es',
+        'fr_*':'fr'
+    });
+    $translateProvider.translations('en',{
+        BOOK_AN_APPOINTMENT: "BOOK AN APPOINTMENT",
+        NAME: "Name",
+        DATE_OF_BIRTH: "Date Of Birth",
+        GENDER: "Gender",
+        MALE: "Male",
+        FEMALE: "Female",
+        DENTAL_CARE: "Dental Care",
+        AGING_SOLUTIONS: "Aging Solutions",
+        EYE_CARE: "Eye Care",
+        PHYSIOTHERAPY: "Physiotherapy",
+        FITNESS: "Fitness",
+        DOCTOR_NAME: "Doctor Name",
+        APPOINTMENT_DATE: "Appointment Date",
+        PHONE_NUMBER: "Phone Number",
+        SERVICE_DESCRIPTION: "Service Description",
+        SERVICE: "Service",
+        BOOK_APPOINTMENT: "Book Appointment",
+        EMAIL:"Email",
+        DOCTOR_NAME: "Doctor Name",
+        MESSAGES:"Message",
+        SEND_MESSAGE: "Send Message",
+        YOUR_MESSAGES: "Your Messages",
+        DOCTOR_DIRECTORY: "DOCTOR DIRECTORY",
+
+
+    });
+    $translateProvider.translations('es',{
+        BOOK_AN_APPOINTMENT: "एक अपॉइंटमेंट बुक करें",
+        NAME: "नाम",
+        DATE_OF_BIRTH: "जन्म की तारीख",
+        GENDER: "लिंग",
+        MALE: "नर",
+        FEMALE: "महिला",
+        DENTAL_CARE: "दाँतों की देखभाल",
+        AGING_SOLUTIONS: "एजिंग समाधान",
+        EYE_CARE: "आंख की देखभाल",
+        PHYSIOTHERAPY: "फिजियोथेरेपी",
+        FITNESS: "स्वास्थ्य",
+        DOCTOR_NAME: "डॉक्टर का नाम",
+        APPOINTMENT_DATE: "मिलने की तारीख",
+        PHONE_NUMBER: "फ़ोन नंबर",
+        SERVICE_DESCRIPTION: "सेवा विवरण",
+        SERVICE: "सर्विस",
+        BOOK_APPOINTMENT: "निर्धारित तारीख बुक करना",
+        EMAIL:"ईमेल",
+        DOCTOR_NAME: "डॉक्टर का नाम",
+        MESSAGES:"मेसेज",
+        SEND_MESSAGE: "मेसेज भेजें",
+        YOUR_MESSAGES: "आपके संदेश",
+        DOCTOR_DIRECTORY: "डॉक्टर निर्देशिका",
+
+    });
+
+    $translateProvider.translations('fr',{
+        BOOK_AN_APPOINTMENT: "బుక్ అపాయింట్మెంట్",
+        NAME: "పేరు",
+        DATE_OF_BIRTH: "పుట్టిన తేది",
+        GENDER: "జెండర్",
+        MALE: "మగ",
+        FEMALE: "మహిళ",
+        DENTAL_CARE: "డెంటల్ రక్షణ",
+        AGING_SOLUTIONS: "ఏజింగ్ సొల్యూషన్స్",
+        EYE_CARE: "ఐ కేర్",
+        PHYSIOTHERAPY: "ఫిజియోథెరపీ",
+        FITNESS: "ఫిట్నెస్",
+        DOCTOR_NAME: "డాక్టర్ పేరు",
+        APPOINTMENT_DATE: "నియామకం తేదీ",
+        PHONE_NUMBER: "ఫోను నంబరు",
+        SERVICE_DESCRIPTION: "సర్వీస్ వివరణ",
+        SERVICE: "సర్వీస్",
+        BOOK_APPOINTMENT: "బుక్ అపాయింట్మెంట్",
+        EMAIL:"ఇమెయిల్",
+        DOCTOR_NAME: "డాక్టర్ పేరు",
+        MESSAGES: "సందేశము",
+        SEND_MESSAGE: "సందేశము పంపుము",
+        YOUR_MESSAGES: "మీ సందేశాలు",
+        DOCTOR_DIRECTORY: "డాక్టర్ డైరెక్టరీ",
+
+    });
+
+
+    $translateProvider.useSanitizeValueStrategy('escape');
+    $translateProvider.preferredLanguage('en');
+
+    $urlRouterProvider.otherwise('/');
 
 $stateProvider
 
@@ -89,8 +180,10 @@ $stateProvider
 });
 
 
-patientDashApp.controller('patientController',['$scope','$http','$state',function($scope,$http,$state){
-
+patientDashApp.controller('patientController',['$scope','$http','$state', '$translate',function($scope,$http,$state, $translate){
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     fetchFitbitData = function () {
 
         $http({
@@ -491,7 +584,11 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 }]);
 
 
-patientDashApp.controller('heartRateController',['$scope','$http','$state','$window',function($scope,$http,$state,$window){
+patientDashApp.controller('heartRateController',['$scope','$http','$state','$translate','$window',function($scope,$http,$state,$translate,$window){
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
+
     $scope.getData=function(){
         //console.log('inside test');
         var socket = new WebSocket('ws://localhost:3000', 'echo-protocol');
@@ -588,7 +685,11 @@ patientDashApp.controller('heartRateController',['$scope','$http','$state','$win
 
     }
 }]);
-patientDashApp.controller('appointmentController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+
+patientDashApp.controller('appointmentController',['$scope', '$http', '$state','$translate', '$window',function($scope, $http, $state,$translate, $window){
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     $scope.doctorNames = [];
     $http({
         method : "GET",
@@ -642,7 +743,10 @@ patientDashApp.controller('appointmentController',['$scope', '$http', '$state', 
 
 
 
-patientDashApp.controller('doctorDirectoryController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+patientDashApp.controller('doctorDirectoryController',['$scope', '$http', '$state','$translate', '$window',function($scope, $http, $state,$translate, $window){
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     $scope.doctors = [];
     $http({
         method : "GET",
@@ -667,8 +771,10 @@ patientDashApp.controller('doctorDirectoryController',['$scope', '$http', '$stat
 
 }]);
 
-patientDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage', '$window',function($scope, $http, $state,$localStorage, $window) {
-
+patientDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage','$translate', '$window',function($scope, $http, $state,$localStorage,$translate, $window) {
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     getSessionValues = function () {
         $http({
             method: 'get',
@@ -703,7 +809,10 @@ patientDashApp.controller('headerController',['$scope', '$http', '$state','$loca
     }
 }]);
 
-patientDashApp.controller('chatPatientController',['$scope', '$http', '$state', '$timeout', function($scope, $http, $state, $timeout){
+patientDashApp.controller('chatPatientController',['$scope', '$http', '$state','$translate', '$timeout', function($scope, $http, $state,$translate, $timeout){
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     $scope.getDoctors=function () {
         $scope.doctorNames = [];
         $http({

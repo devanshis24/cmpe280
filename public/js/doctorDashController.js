@@ -4,8 +4,48 @@
 /**
  * Created by devanshis24 on 11/26/2016.
  */
-var doctorDashApp = angular.module('doctorDashApp', ['ui.router', 'ngStorage', 'ui.calendar', 'ui.bootstrap']);
-doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
+var doctorDashApp = angular.module('doctorDashApp', ['ui.router', 'ngStorage', 'ui.calendar', 'ui.bootstrap','pascalprecht.translate']);
+doctorDashApp.config(function($stateProvider, $urlRouterProvider,$translateProvider) {
+
+    $translateProvider.fallbackLanguage('en');
+    $translateProvider.registerAvailableLanguageKeys(['en','es', 'fr'],{
+        'en_*':'en',
+        'es_*':'es',
+        'fr_*':'fr'
+
+    });
+    $translateProvider.translations('en',{
+        LOGIN: "Login" ,
+        LOGIN_AS_PATIENT: "LOGIN AS PATIENT",
+        EMAIL_ADDRESS: "Email Address",
+        PASSWORD: "Password",
+        DONT_HAVE_ACCOUNT:  "Don't have an account?",
+        REGISTER_AS_PATIENT_CLIENT: "Register as patient or client using menubar at top-right",
+
+
+
+
+    });
+    $translateProvider.translations('es',{
+        LOGIN: "लॉग इन करें",
+        LOGIN_AS_PATIENT: "लॉग इन रोगी के रूप में",
+        EMAIL_ADDRESS: "ईमेल पता",
+        PASSWORD: "पासवर्ड",
+        DONT_HAVE_ACCOUNT: "एक खाता नहीं है?",
+        REGISTER_AS_PATIENT_CLIENT: "रोगी या ग्राहक शीर्ष सही पर मेनू बार का उपयोग कर के रूप में रजिस्टर"
+    });
+    $translateProvider.translations('fr',{
+        LOGIN: "లాగిన్",
+        LOGIN_AS_PATIENT: "రోగి లాగిన్",
+        EMAIL_ADDRESS: "ఇమెయిల్ అడ్రస్",
+        PASSWORD:"పాస్వర్డ్",
+        DONT_HAVE_ACCOUNT:"ఖాతా లేదా?",
+        REGISTER_AS_PATIENT_CLIENT:"కుడి ఎగువన మెనూబార్ ఉపయోగించడం ద్వారా రోగి లేదా క్లయింట్ వలె నమోదు",
+    });
+
+    $translateProvider.useSanitizeValueStrategy('escape');
+    $translateProvider.preferredLanguage('en');
+
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -210,7 +250,10 @@ doctorDashApp.controller('doctorScheduleController', function($scope, $compile, 
     $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
 
 });
-doctorDashApp.controller('chatDoctorController',['$scope', '$http', '$state', '$timeout',function($scope, $http, $state, $timeout){
+doctorDashApp.controller('chatDoctorController',['$scope', '$http', '$state', '$timeout','$translate',function($scope, $http, $state, $timeout, $translate){
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     $scope.getMessages=function(){
         $http({
             method: "get",
@@ -287,8 +330,10 @@ doctorDashApp.controller('chatDoctorController',['$scope', '$http', '$state', '$
 }]);
 
 
-doctorDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage','$window',function($scope, $http, $state,$localStorage, $window) {
-
+doctorDashApp.controller('headerController',['$scope', '$http', '$state','$localStorage','$translate','$window',function($scope, $http, $state,$localStorage, $translate,$window) {
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     getSessionValues = function () {
         $http({
             method : 'get',
@@ -362,8 +407,10 @@ doctorDashApp.controller('directoryController',['$scope','$http','$state','$loca
 
 }]);
 
-doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$localStorage','$window',function($scope, $http, $state,$localStorage, $window) {
-
+doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$localStorage','$translate','$window',function($scope, $http, $state,$localStorage,$translate, $window) {
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     getPatientData = function () {
 
         $http({

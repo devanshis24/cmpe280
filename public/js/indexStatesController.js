@@ -1,5 +1,44 @@
-var routerApp = angular.module('routerApp', ['ui.router', 'ngStorage']);
-routerApp.config(function($stateProvider, $urlRouterProvider) {
+var routerApp = angular.module('routerApp', ['ui.router', 'ngStorage','pascalprecht.translate']);
+routerApp.config(function($stateProvider, $urlRouterProvider,$translateProvider) {
+
+    $translateProvider.fallbackLanguage('en');
+    $translateProvider.registerAvailableLanguageKeys(['en','es', 'fr'],{
+        'en_*':'en',
+        'es_*':'es',
+        'fr_*':'fr'
+
+    });
+    $translateProvider.translations('en',{
+        LOGIN: "Login" ,
+        LOGIN_AS_PATIENT: "LOGIN AS PATIENT",
+        EMAIL_ADDRESS: "Email Address",
+        PASSWORD: "Password",
+        DONT_HAVE_ACCOUNT:  "Don't have an account?",
+        REGISTER_AS_PATIENT_CLIENT: "Register as patient or client using menubar at top-right",
+
+
+
+
+    });
+    $translateProvider.translations('es',{
+        LOGIN: "लॉग इन करें",
+        LOGIN_AS_PATIENT: "लॉग इन रोगी के रूप में",
+        EMAIL_ADDRESS: "ईमेल पता",
+        PASSWORD: "पासवर्ड",
+        DONT_HAVE_ACCOUNT: "एक खाता नहीं है?",
+        REGISTER_AS_PATIENT_CLIENT: "रोगी या ग्राहक शीर्ष सही पर मेनू बार का उपयोग कर के रूप में रजिस्टर"
+    });
+    $translateProvider.translations('fr',{
+        LOGIN: "లాగిన్",
+        LOGIN_AS_PATIENT: "రోగి లాగిన్",
+        EMAIL_ADDRESS: "ఇమెయిల్ అడ్రస్",
+        PASSWORD:"పాస్వర్డ్",
+        DONT_HAVE_ACCOUNT:"ఖాతా లేదా?",
+        REGISTER_AS_PATIENT_CLIENT:"కుడి ఎగువన మెనూబార్ ఉపయోగించడం ద్వారా రోగి లేదా క్లయింట్ వలె నమోదు",
+    });
+
+    $translateProvider.useSanitizeValueStrategy('escape');
+    $translateProvider.preferredLanguage('en');
 
     $urlRouterProvider.otherwise('/');
 
@@ -80,10 +119,12 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
 });
 
-routerApp.controller('loginController',['$scope', '$http', '$state',function($scope, $http, $state){
+routerApp.controller('loginController',['$scope', '$http', '$state','$translate',function($scope, $http, $state,$translate){
 
 
-
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     $scope.login=function(){
         console.log($scope.email+' '+$scope.password);
         $http({
@@ -149,7 +190,10 @@ routerApp.controller('loginController',['$scope', '$http', '$state',function($sc
 
     }
 }]);
-routerApp.controller('signupController',['$scope', '$http', '$state', '$window',function($scope, $http, $state, $window){
+routerApp.controller('signupController',['$scope', '$http', '$state', '$translate','$window',function($scope, $http, $state,$translate, $window){
+    $scope.changeLanguage = function(key){
+        $translate.use(key);
+    }
     console.log($scope.userid+' '+$scope.email+' '+$scope.password);
     $scope.signup = function() {
         $http({

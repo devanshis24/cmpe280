@@ -93,7 +93,7 @@ wsServer.on('request', function(r){
                 // Send a message to the client with the message
                 var heartRate=Math.round((Math.random()*(104)+48));
                 if(heartRate<50||heartRate>150){
-                    if(count<20){
+                    if(count<10){
                         heartRate=Math.round((Math.random()*(100)+50));
                         count++;
                     }
@@ -117,7 +117,7 @@ wsServer.on('request', function(r){
                             to: 'raghavendra.kps88@gmail.com', // list of receivers
                             subject: "Condition Report: " + currentUser.name, // Subject line
                             text: "Heart Rate of " + currentUser.name + " is out of normal range. Please take care of him / her.", // plaintext body
-                            html: '<b>Hello world 🐴</b>' // html body
+                            html: '<b>Heart Rate of</b>'+ currentUser.name + '<b>is out of normal range. Please take care of him</b>'// html body
                         };
 
                         // send mail with defined transport object
