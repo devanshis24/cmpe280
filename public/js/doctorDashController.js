@@ -15,7 +15,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/',
             views: {
                 'header':{
-                    templateUrl: '/ejs/doctorHeader.ejs',
+                    templateUrl: '/ejs/newDoctorHeader.ejs',
                     controller: 'headerController'
 
                 },
@@ -31,7 +31,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/appointment',
             views : {
                 'header@' : {
-                    templateUrl: '/ejs/doctorHeader.ejs',
+                    templateUrl: '/ejs/newDoctorHeader.ejs',
                     controller: 'headerController'
                 }
                 ,
@@ -46,7 +46,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/dashboard',
             views : {
                 'header@' : {
-                    templateUrl: '/ejs/doctorHeader.ejs',
+                    templateUrl: '/ejs/newDoctorHeader.ejs',
                     controller: 'headerController'
                 }
                 ,
@@ -61,7 +61,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/patientDirectory',
             views : {
                 'header@' : {
-                    templateUrl: '/ejs/doctorHeader.ejs',
+                    templateUrl: '/ejs/newDoctorHeader.ejs',
                     controller: 'headerController'
                 }
                 ,
@@ -76,7 +76,7 @@ doctorDashApp.config(function($stateProvider, $urlRouterProvider) {
             url: '/chatDoctor',
             views : {
                 'header@' : {
-                    templateUrl: '/ejs/doctorHeader.ejs',
+                    templateUrl: '/ejs/newDoctorHeader.ejs',
                     controller: 'headerController'
                 }
                 ,
@@ -275,10 +275,7 @@ doctorDashApp.controller('chatDoctorController',['$scope', '$http', '$state', '$
                 }, 5000);
             }
             else if (data.statusCode == 404) {
-                //alert(" User doesnot exists ! Pleasecheck you email or password. ");
-                //$scope.email = "";
-                //$scope.password = "";
-                //focus('exampleInputEmail1');
+
             }
             else if (data.statusCode == 500) {
                 //window.location.href("error?message=Error");
@@ -301,7 +298,7 @@ doctorDashApp.controller('headerController',['$scope', '$http', '$state','$local
             console.log("SESSION NAME " +data1.name);
             $scope.userName = data1.name;
             getPatientCounts = function () {
-                alert("innnnnn" + data1.name);
+
                 $http({
                     method: 'post',
                     url: '/patientDirectory',
@@ -341,7 +338,7 @@ doctorDashApp.controller('headerController',['$scope', '$http', '$state','$local
 
     $scope.logout = function() {
 
-        alert("Logout");
+
         $localStorage.$reset();
         $http({
             method: 'get',
@@ -368,7 +365,7 @@ doctorDashApp.controller('directoryController',['$scope','$http','$state','$loca
 doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$localStorage','$window',function($scope, $http, $state,$localStorage, $window) {
 
     getPatientData = function () {
-        alert("innnnnn Pataint Data " + $localStorage.doctorName);
+
         $http({
             method: 'post',
             url: '/patientData',
@@ -380,6 +377,9 @@ doctorDashApp.controller('doctorDashController',['$scope', '$http', '$state','$l
                 console.log("success patient Data : " + JSON.stringify(data));
 
                 $scope.appointments = data.result;
+
+
+
             }
             else if(data.statusCode == "500") {
                 console.log("500 error");

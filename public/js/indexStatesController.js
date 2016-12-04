@@ -15,8 +15,8 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
 
                 },
                 'content': {
-                    templateUrl: '/ejs/loginpage.ejs',
-                    controller: 'loginController'
+                    templateUrl: '/ejs/newHeader.ejs',
+
                 }
 
             }
@@ -24,7 +24,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
         .state('app.signup',{
             url:'signup',
             views: {
+                'header':{
+                    templateUrl: '/ejs/header.ejs',
 
+
+                },
                 'content@':{
                     templateUrl: '/ejs/signup.ejs',
                     controller: 'signupController'
@@ -34,6 +38,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
         .state('app.signupDoctor',{
                 url:'signupDoctor',
             views: {
+                'header':{
+                    templateUrl: '/ejs/header.ejs',
+
+
+                },
                     'content@':{
                         templateUrl: '/ejs/signupDoctor.ejs',
                         controller: 'signupController'
@@ -43,6 +52,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
         .state('app.loginDoctor',{
             url:'loginDoctor',
             views: {
+                'header':{
+                    templateUrl: '/ejs/header.ejs',
+
+
+                },
                 'content@':{
                     templateUrl: '/ejs/loginDoctor.ejs',
                     controller: 'loginController'
@@ -52,6 +66,11 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
         .state('app.loginpage',{
             url:'loginpage',
             views: {
+                'header':{
+                    templateUrl: '/ejs/header.ejs',
+
+
+                },
                 'content@':{
                     templateUrl: '/ejs/loginpage.ejs',
                     controller: 'loginController'

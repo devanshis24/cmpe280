@@ -12,7 +12,7 @@ $stateProvider
         url: '/',
         views: {
             'header':{
-                templateUrl: '/ejs/patientHeader.ejs',
+                templateUrl: '/ejs/newPatientHeader.ejs',
                 controller: 'headerController'
 
 
@@ -29,7 +29,7 @@ $stateProvider
         url: '/appointment',
         views : {
             'header@' : {
-                templateUrl: '/ejs/patientHeader.ejs',
+                templateUrl: '/ejs/newPatientHeader.ejs',
                 controller: 'headerController'
             }
             ,
@@ -44,7 +44,7 @@ $stateProvider
         url: '/heartRate',
         views : {
             'header@' : {
-                templateUrl: '/ejs/patientHeader.ejs',
+                templateUrl: '/ejs/newPatientHeader.ejs',
                 controller: 'headerController'
             }
             ,
@@ -59,7 +59,7 @@ $stateProvider
         url: '/doctorDirectory',
         views : {
             'header@' : {
-                templateUrl: '/ejs/patientHeader.ejs',
+                templateUrl: '/ejs/newPatientHeader.ejs',
                 controller: 'headerController'
             }
             ,
@@ -74,7 +74,7 @@ $stateProvider
         url: '/chat',
         views : {
             'header@' : {
-                templateUrl: '/ejs/patientHeader.ejs',
+                templateUrl: '/ejs/newPatientHeader.ejs',
                 controller: 'headerController'
             }
             ,
@@ -109,6 +109,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 Highcharts.chart('heartContainer', {
 
+                    title: {
+                        text: 'Daily Heart Rate'
+                    },
 
 
                     xAxis: {
@@ -120,7 +123,7 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
 
                     series: [{
-
+                        name: "Heart Rate",
                         data: data.heart
 
                     },
@@ -175,7 +178,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 Highcharts.chart('calorieContainer', {
 
-
+                    title: {
+                        text: 'Daily Calories'
+                    },
 
                     xAxis: {
 
@@ -186,13 +191,13 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
 
                     series: [{
-
+                        name: "calories",
                         data: data.value
 
                     }],
 
                     series: [{
-
+                        name: "calories",
                         data: data.value
 
                     }]
@@ -243,7 +248,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 Highcharts.chart('stepsCointainer', {
 
-
+                    title: {
+                        text: 'Daily Steps'
+                    },
 
                     xAxis: {
 
@@ -254,13 +261,13 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
 
                     series: [{
-
+                        name: "Steps",
                         data: data.value
 
                     }],
 
                     series: [{
-
+                        name: "Steps",
                         data: data.value
 
                     }]
@@ -316,7 +323,6 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
         }).success(function (data) {
 
 
-
             console.log(data);
 
             if(data.statusCode == 200) {
@@ -327,7 +333,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 Highcharts.chart('calorieContainerDynamic', {
 
-
+                    title: {
+                        text: 'Dynamic Calorie Count'
+                    },
 
                     xAxis: {
 
@@ -338,13 +346,13 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
 
                     series: [{
-
+                        name: "Calories",
                         data: data.value
 
                     }],
 
                     series: [{
-
+                        name: "Calories",
                         data: data.value
 
                     }]
@@ -401,6 +409,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 Highcharts.chart('heartContainerDynamic', {
 
+                    title: {
+                        text: 'Dynamic Heart Rate'
+                    },
 
 
                     xAxis: {
@@ -412,13 +423,13 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
 
                     series: [{
-
+                        name: "Heart Rate",
                         data: data.value
 
                     }],
 
                     series: [{
-
+                        name: "Heart Rate",
                         data: data.value
 
                     }]
@@ -474,6 +485,9 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
                 Highcharts.chart('stepsContainerDynamic', {
 
+                    title: {
+                        text: 'Dynamic Step Count'
+                    },
 
 
                     xAxis: {
@@ -485,13 +499,13 @@ patientDashApp.controller('patientController',['$scope','$http','$state',functio
 
 
                     series: [{
-
+                        name: "Steps",
                         data: data.value
 
                     }],
 
                     series: [{
-
+                        name: "Steps",
                         data: data.value
 
                     }]

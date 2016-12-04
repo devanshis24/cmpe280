@@ -124,48 +124,58 @@
     </script>
 </head>
 <body>
-<div class="container-fluid" style="margin-top: 80px;background-color: aliceblue;vertical-align: middle">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4" style="background-color:#364150;border-color: aliceblue;border-style: solid;border-width: 2px;border-radius: 15px 50px;padding: 10px">
-        <div class="navbar" style="height: 20px;background-color: #2b3643;color: aliceblue;font-size: larger;padding: 10px"><center><b style="">Register AS PATIENT</b></center></div>
+<div class="container-fluid" style="margin-top: 180px;background-color: aliceblue;vertical-align: middle">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8" style="background-color:#364150;border-color: aliceblue;border-style: solid;border-width: 2px;border-radius: 15px 50px;padding: 10px">
+        <div class="navbar" style="height: 20px;background-color: #2b3643;color: aliceblue;border-radius: 15px 50px;font-size: larger;padding: 10px"><center><b style="">Register AS PATIENT</b></center></div>
         <form name="patientForm">
             <div class="form-group">
-                <label  style="color: aliceblue;">Full Name</label>
-                <input type="text" class="form-control" id="fullname" name ="fullname"  placeholder="Enter First Name Middle Initial Last Name" ng-model="fullname">
 
-            </div>
-            <div class="form-group">
-                <label  style="color: aliceblue;">User Id</label>
-                <input type="text" class="form-control" id="userid" name="userid"  placeholder="Enter User Id" ng-model="userid">
+                    <label  style="color: aliceblue;">Full Name</label>
+                    <input type="text" class="form-control" id="fullname" name ="fullname"  placeholder="Enter First Name Middle Initial Last Name" ng-model="fullname">
 
-            </div>
+                           </div>
             <div class="form-group">
+                <div class="col-sm-6">
+                    <label  style="color: aliceblue;">User Id</label>
+                    <input type="text" class="form-control" id="userid" name="userid"  placeholder="Enter User Id" ng-model="userid">
+
+                </div>
+                <div class="col-sm-6">
+
                 <label  style="color: aliceblue;">Email address</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" ng-model="email">
+                </div>
+            </div>
 
-            </div>
             <div class="form-group">
-                <label style="color: aliceblue;">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="password">
+                <div class="col-sm-6">
+                    <label style="color: aliceblue;">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="password">
+                </div>
+                <div class="col-sm-6">
+                    <label  style="color: aliceblue;">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Password" ng-model="confirmpassword">
+                </div>
             </div>
+
             <div class="form-group">
-                <label  style="color: aliceblue;">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Password" ng-model="confirmpassword">
-            </div>
-            <div class="form-group">
+                <div class="col-sm-6">
                 <label  style="color: aliceblue;">Mobile Number</label>
                 <input type="phone" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number" ng-model="mobile">
+                </div>
+                <div class="col-sm-6">
+                    <label  style="color: aliceblue;">Date Of Birth</label>
+                    <input type="date" class="form-control" id="birthdate" placeholder="Select your Date of Birth" ng-model="birthdate">
+                </div>
             </div>
-            <div class="form-group">
-                <label  style="color: aliceblue;">Date Of Birth</label>
-                <input type="date" class="form-control" id="birthdate" placeholder="Select your Date of Birth" ng-model="birthdate">
-            </div>
+
 
             <center><button type="submit" class="btn btn-primary" id="submitButton" disabled="disabled" style="background-color: #2b3643;border-color: aliceblue;width: 150px" ng-click="signup()">Register</button></center>
         </form>
         <p style="margin-top: 10px"> Don't have an account?<span> Register as patient or client using menubar at top-right</span></p>
     </div>
-    <div class="col-sm-4"></div>
+    <div class="col-sm-2"></div>
 
 </div>
 </body>

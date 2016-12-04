@@ -222,7 +222,7 @@ app.get( '/heart-daily', function( req, res, next ) {
                         statusCode: 200,
                         time: heartTime
                         ,
-                        heart: jsonArr};
+                        value: jsonArr};
 
                     res.send(ress);
                     //res.send( '<pre>' + JSON.stringify( profile, null, 2 ) + '</pre>' );
@@ -246,7 +246,7 @@ app.get( '/heart-daily', function( req, res, next ) {
                 statusCode: 200,
                 time: heartTime
                 ,
-                heart: jsonArr};
+                value: jsonArr};
 
             res.send(ress);
         });

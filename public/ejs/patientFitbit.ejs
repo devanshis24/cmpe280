@@ -39,21 +39,37 @@
 
     .pad_50{
         padding: 15px; width:45%; float:left;    }
-</style><div style="padding-top:50px; width:90%; margin:0 auto;">
-    <div>provide dates</div>
+</style>
+<body>
+<div style="padding-top:50px;margin-top: 150px; width:100%; ">
+    <div class="container">
+        <div class="row"><center>
+    <div style="font-size: 24px">provide dates</div>
     <form>
-        <input type="date" id="start" ng-model="start">
+        <input  type="date" id="start" ng-model="start">
         <!--    <input type="date" id="end" id="start" ng-model="end">-->
-        <input type="submit" ng-click="fetchDynamicDate()">
+        <input class="btn btn-success" type="submit" ng-click="fetchDynamicDate()">
         <!--    <input type="submit" ng-click="demoData()">-->
-    </form>
+    </form></center>
+    </div>
+        <div class="row" style="padding: 20px">
+            <div class="col-xs-6 " id="heartContainer">Heart Beats</div>
+    <div class="col-xs-6 " id="heartContainerDynamic">Dynamic Heart Beats</div>
 
-    <div class="col-xs-6 container-fluid row clearfix" id="calorieContainer">Calories</div>
-    <div class="col-xs-6 container-fluid row clearfix" id="calorieContainerDynamic">Dynamic Calories</div>
-    <div class="col-xs-6 container-fluid row clearfix" id="heartContainer">Heart Beats</div>
-    <div class="col-xs-6 container-fluid row clearfix" id="heartContainerDynamic">Dynamic Heart Beats</div>
-    <div class="col-xs-6 container-fluid row clearfix" id="stepsCointainer">Steps</div>
-    <div class="col-xs-6 container-fluid row clearfix" id="stepsContainerDynamic">Dynamic Steps Steps</div>
+</div>
+
+    <div class="row" style="padding: 20px">
+        <div class="col-xs-6 " id="calorieContainer">Calories</div>
+        <div class="col-xs-6 " id="calorieContainerDynamic">Dynamic Calories</div>
+
+    </div>
+    <div class="row" style="padding: 20px">
+        <div class="col-xs-6  " id="stepsCointainer">Steps</div>
+        <div class="col-xs-6  " id="stepsContainerDynamic">Dynamic Steps Steps</div>
+
+    </div>
+    </div>
 
 </div>
 <div id="dynamic_data"></div>
+</body>
